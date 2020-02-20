@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ittf Table {% endblock title %}
+
+{% block content %}
+
+{% for var in object_list%}
+{{var}}
+
+{% endfor %}
+
+{% endblock content %}
