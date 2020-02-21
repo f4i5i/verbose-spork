@@ -44,7 +44,17 @@ INSTALLED_APPS = [
 
     #installed apps
      "django_rq",
+     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework_xml.parsers.XMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework_xml.renderers.XMLRenderer',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,7 +93,7 @@ WSGI_APPLICATION = 'ittfApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'temp.sqlite3'),
     }
 }
 
@@ -154,3 +164,7 @@ RQ_QUEUES = {
         'DB': 0,
     }
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+

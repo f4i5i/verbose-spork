@@ -5,7 +5,7 @@ import re
 import time
 from django_rq import job
 from .func import  *
-from .models import Ittf
+from .models import Tournament,TournamentInfo,Matches,Players
 import  django_rq
 from datetime import datetime
 
@@ -19,57 +19,69 @@ def scrape():
     sub_set = f_urls[12:16]
     sch_list,rv_list = get_daily_schedule(sub_set)
     for url in sch_list:
+        tour = Tournament(urlfortournement=url)
+        tour.save()
         new_url = url[:55]+"champ.json"
         print(new_url)
         champ_data = requests.get(new_url,headers=HEADERS,timeout=30).json()
         champName = champ_data['champ']
+        champStatus = champ_data['status']
+        champDates = champ_data['dates']
+        champDateDesc = champ_data['datesDesc']
         champDesc = champ_data['champDesc']
         champLocation = champ_data['location']
+        champeEvent = champ_data['events']
+        champPhases = champ_data['phases']
+        champLocations = champ_data['locations']
         champFinished = champ_data['isFinished']
+        champ = TournamentInfo(urltournement=tour,champ=champName,
+                                status=champStatus,dates=champDates,
+                                datesdesc=champDateDesc,champdesc=champDesc,
+                                location = champLocation,events=champeEvent,
+                                phases=champPhases,locations=champLocations,
+                                isfinished=champFinished)
+        champ.save()
         for i in range(len(champ_data['dates'])):
             durl= url[:55]+"match/d"+champ_data['dates'][i]['raw']+'.json'
             data = requests.get(durl,headers=HEADERS,timeout=30).json()
             for i in range(len(data)):
+                
+                var_key = data[i]['Key']
+                var_desc = data[i]['Desc']
                 var_time = data[i]['Time']
                 var_loc = data[i]['LocDesc']
-                var_desc = data[i]["Desc"]
-                home = data[i]['Home']['Desc']
+                var_locdesc = data[i]["LocDesc"]
+                var_venue = data[i]['Venue']
+                var_rtime = data[i]['RTime']
+                var_status = data[i]['Status']
+                var_isteam = data[i]['IsTeam']
+                var_hascomps = data[i]['HasComps']
+                match = Matches(champ=champ,key=var_key,desc=var_desc,
+                                time=var_time,loc=var_loc,locdesc=var_locdesc,
+                                venue =var_venue,rtime=var_rtime,status = var_status,
+                                isteam=var_isteam,hascomps=var_hascomps)
+                match.save()
+                Home = data[i]['Home']['Desc']
                 Away = data[i]['Away']['Desc']
-                team = data[i]['IsTeam']
-                mtime = data[i]['Time']
+                has_stat = data[i]['HasStats']
                 teamA = None
                 teamB = None
-                if team == False:
+                if var_isteam == False:
                     try:
-                        ittf_instance = Ittf(urlfortournement=url,tournment_name = champName,tournment_location=champLocation,
-                        tournment_desc=champDesc,isfinished=champFinished,match_desc=var_desc,match_time=mtime,isteam=team,home=home,away=Away)
-                        ittf_instance.save()
+                        ply = Players(match=match,home=Home,away=Away,hasstats=has_stat)
+                        ply.save()
                     except :
-                        raise 
+                        raise
                     finally:
-                        time.sleep(50)
-                        
-
+                        time.sleep(10)
                 else:
                     teamA = data[i]['Home']['Desc'].replace('/','&')
                     teamB = data[i]['Away']['Desc'].replace('/','&')
-                    try:                  
-                        ittf_instance = Ittf(urlfortournement=url,tournment_name = champName,tournment_location=champLocation,
-                        tournment_desc=champDesc,isfinished=champFinished,match_desc=var_desc,match_time=mtime,isteam=team,home=home,away=Away,teamA=teamA,teamB=teamB)
-                        ittf_instance.save()
+                    try:
+                        ply = Players(match=match,home=Home,away=Away,hasstats=has_stat,team_a=teamA,team_b=teamB)
+                        ply.save()                  
+
                     except :
                         raise 
                     finally:
-                        time.sleep(50)
-#  urlForTournement = models.CharField(max_length=500)
-#     tournment_name = models.CharField(max_length=500)
-#     tournment_location = models.CharField(max_length=500)
-#     tournment_desc = models.CharField(max_length=500)
-#     isfinished = models.BooleanField()
-#     match_desc = models.CharField(max_length=500)
-#     match_time = models.DateTimeField()
-#     isteam = models.BooleanField(max_length=500)
-#     home = models.CharField(max_length=500)
-#     away = models.CharField(max_length=500)
-#     teamA = models.CharField(max_length=500,default=None)
-#     team2 = models.CharField(max_length=500,default=None)
+                        time.sleep(10)
