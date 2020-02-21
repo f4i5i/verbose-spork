@@ -1,0 +1,1 @@
+web:gunicorn ittfApp.wsgi --log-file - 
