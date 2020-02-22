@@ -20,7 +20,7 @@ def scrapeview(request):
     if request.method == "GET":
         queue= django_rq.get_queue('default',is_async=True,default_timeout=30000)
         queue.enqueue(scrape)
-    return HttpResponseRedirect("/")
+    return HttpResponse("Scraping..........")
 
 
 class IttfView(ListView):
@@ -31,8 +31,8 @@ class IttfView(ListView):
 def playerxml(request):
     if request.method == "GET":
         data1 = Players.objects.all().values_list()
-      
-        return HttpResponse(data1)
+        res = data1[1]
+        return HttpResponse(res)
 
 def playerxml2(request):
      if request.method == "GET":
