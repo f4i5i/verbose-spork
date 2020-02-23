@@ -1,0 +1,16 @@
+setup:
+    addons:
+    - plan: heroku-postgresql
+    - plan: heroku-redis
+build:
+    docker:
+     web: Dockerfile
+
+release:
+    image: web
+    command:
+     - python manage.py collectstatic --noinput
+     - python manage.py rqworker
+
+run:
+    web: gunicorn ittfApp.wsgi

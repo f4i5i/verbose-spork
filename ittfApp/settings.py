@@ -25,7 +25,7 @@ SECRET_KEY = ')2@3&8!ghlbegqz(=+6)t9u1_oc=gq)q3^_0xuu76sf1g*ozw2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +44,17 @@ INSTALLED_APPS = [
 
     #installed apps
      "django_rq",
+     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework_xml.parsers.XMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework_xml.renderers.XMLRenderer',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,10 +91,18 @@ WSGI_APPLICATION = 'ittfApp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'temp.sqlite3'),
+    # }
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432
+        }
 }
 
 
@@ -128,10 +146,10 @@ STATIC_URL = '/static/'
 
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
+        'HOST': '172.27.0.3',
         'PORT': 6379,
         'DB': 0,
-        'PASSWORD': 'yourpassword',
+        # 'PASSWORD': 'yourpassword',
         'DEFAULT_TIMEOUT': 360,
     },
     'with-sentinel': {
@@ -154,3 +172,10 @@ RQ_QUEUES = {
         'DB': 0,
     }
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+# import dj_database_url
+# prod_db = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(prod_db)
