@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
+        'HOST': '172.27.0.3',
         'PORT': 6379,
         'DB': 0,
         # 'PASSWORD': 'yourpassword',
@@ -176,6 +176,6 @@ RQ_QUEUES = {
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-import dj_database_url
-prod_db = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
+# import dj_database_url
+# prod_db = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(prod_db)
