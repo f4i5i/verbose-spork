@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 
 RQ_QUEUES = {
     'default': {
-        'HOST': '172.27.0.3',
+        'HOST': '172.22.0.2',
         'PORT': 6379,
         'DB': 0,
         # 'PASSWORD': 'yourpassword',

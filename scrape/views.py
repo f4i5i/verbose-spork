@@ -49,3 +49,30 @@ def playerxml2(request):
         return HttpResponse(res,content_type="application/xml")
 
     
+def matches(request):
+    if request.method == "GET":
+        data = Matches.objects.all().values_list()
+        a = ET.Element('Matches')
+       
+    return HttpResponse(data[1])
+
+def tournament(request):
+    if request.method == "GET":
+        data = TournamentInfo.objects.all().values_list()
+        data1 = data[0][1]
+        a = ET.Element('Matches')
+       
+    return HttpResponse(data)
+
+def fixtures(request):
+    if request.method == "GET":
+        data = Matches.objects.all().values_list()
+        a = ET.Element('fixtures')
+        for i in range(len(data)):
+            b = ET.SubElement(a,'fixture_id',id=str(data[i][0]))
+            c = ET.SubElement(b,'time')
+            c.text = data[i][4]
+            d = ET.SubElement(b,'rtime')
+            d.text = data[i][8]
+        res = ET.tostring(a)
+        return HttpResponse(res,content_type="application/xml")
