@@ -56,8 +56,13 @@ class Players(models.Model):
     match = models.ForeignKey(Matches,related_name="match",on_delete=models.CASCADE)
     home = models.TextField(max_length=1000)
     away = models.TextField(max_length=1000)
-    hasstats = models.TextField(max_length=1000)
+    home_reg = models.TextField(max_length=1000)
+    home_org = models.TextField(max_length=1000)
+    home_orgdesc = models.TextField(max_length=1000)
+    away_reg = models.TextField(max_length=1000)
+    away_org = models.TextField(max_length=1000)
+    away_orgdesc = models.TextField(max_length=1000)
     team_a = models.TextField(max_length=1000,null=True,blank=True)
     team_b = models.TextField(max_length=1000,null=True,blank=True)
-
+    
         
