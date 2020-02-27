@@ -23,16 +23,8 @@ def scrapeview(request):
     return HttpResponse("Scraping..........")
 
 
-class IttfView(ListView):
-    model = Players
-    template_name = "Table.html"
 
 
-def playerxml(request):
-    if request.method == "GET":
-        data1 = Players.objects.all().values_list()
-        res = data1[1]
-        return HttpResponse(res)
 
 def playerxml2(request):
      if request.method == "GET":
@@ -48,21 +40,37 @@ def playerxml2(request):
         res = ET.tostring(a)
         return HttpResponse(res,content_type="application/xml")
 
-    
-def matches(request):
-    if request.method == "GET":
-        data = Matches.objects.all().values_list()
-        a = ET.Element('Matches')
-       
-    return HttpResponse(data[1])
 
-def tournament(request):
+def tournamentinfo(request):
     if request.method == "GET":
         data = TournamentInfo.objects.all().values_list()
-        data1 = data[0][1]
-        a = ET.Element('Matches')
-       
-    return HttpResponse(data)
+        a = ET.Element('Tournament Data')
+        for i in range(len(data)):
+            b = ET.SubElement(a,'Tournmanet id',id=str(data[i][0]))
+            c = ET.SubElement(b,'URL')
+            c.text = data[i][1]
+            d = ET.SubElement(b,'champ')
+            d.text = data[i][2]
+            e = ET.SubElement(b,'status')
+            e.text = data[i][3]
+            f = ET.SubElement(b,'dates')
+            f.text = data[i][4]
+            g = ET.SubElement(b,'datesdesc')
+            g.text = data[i][5]
+            h = ET.SubElement(b,'champdesc')
+            h.text = data[i][6]
+            j = ET.SubElement(b,'location')
+            j.text = data[i][7]
+            g = ET.SubElement(b,'events')
+            g.text = data[i][8]
+            k = ET.SubElement(b,'phases')
+            k.text = data[i][9]
+            l = ET.SubElement(b,'locations')
+            l.text = data[i][10]
+        res = ET.tostring(a)
+        return HttpResponse(res,content_type="application/xml")
+
+
 
 def fixtures(request):
     if request.method == "GET":
@@ -76,3 +84,5 @@ def fixtures(request):
             d.text = data[i][8]
         res = ET.tostring(a)
         return HttpResponse(res,content_type="application/xml")
+
+
