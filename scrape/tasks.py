@@ -16,7 +16,7 @@ def scrape():
 
     all_urls =get_ittf_url(url)
     f_urls = filter_list(all_urls)
-    sub_set = f_urls[16:18]
+    sub_set = f_urls[13:14]
     sch_list,rv_list = get_daily_schedule(sub_set)
     for url in sch_list:
         tour = Tournament(urlfortournement=url)
@@ -30,8 +30,8 @@ def scrape():
         champDateDesc = champ_data['datesDesc']
         champDesc = champ_data['champDesc']
         champLocation = champ_data['location']
-        champeEvent = champ_data['events']
-        champPhases = champ_data['phases']
+        champeEvent = [j['Desc'] for j in champ_data['events']]
+        champPhases = [j['Desc'] for j in champ_data['phases']]
         champLocations = champ_data['locations']
         champFinished = champ_data['isFinished']
         champ = TournamentInfo(urltournement=tour,champ=champName,
@@ -41,6 +41,7 @@ def scrape():
                                 phases=champPhases,locations=champLocations,
                                 isfinished=champFinished)
         champ.save()
+        
         for i in range(len(champ_data['dates'])):
             durl= url[:55]+"match/d"+champ_data['dates'][i]['raw']+'.json'
             data = requests.get(durl,headers=HEADERS,timeout=30).json()
@@ -73,11 +74,10 @@ def scrape():
                 teamB = None
                 if var_isteam == False:
                     try:
-                        ply = Players(match=match,home=Home,away=Away,
+                        ply = Players.objects.get_or_create(match=match,home=Home,away=Away,
                                     home_reg=home_var_reg,home_org=home_var_org,home_orgdesc=home_var_orgdesc,
                                     away_reg=away_var_reg,away_org=away_var_org,away_orgdesc=away_var_orgdesc)
-                        ply.save()
-                    except :
+                    except:
                         raise
                     finally:
                         time.sleep(5)
@@ -85,11 +85,9 @@ def scrape():
                     teamA = data[i]['Home']['Desc'].replace('/','&')
                     teamB = data[i]['Away']['Desc'].replace('/','&')
                     try:
-                        ply = Players(match=match,home=Home,away=Away,
+                        ply = Players.objects.get_or_create(match=match,home=Home,away=Away,
                                     home_reg=home_var_reg,home_org=home_var_org,home_orgdesc=home_var_orgdesc,
-                                    away_reg=away_var_reg,away_org=away_var_org,away_orgdesc=away_var_orgdesc)
-                        ply.save()                  
-
+                                    away_reg=away_var_reg,away_org=away_var_org,away_orgdesc=away_var_orgdesc,team_a=teamA,team_b=teamB)
                     except :
                         raise 
                     finally:
