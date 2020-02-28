@@ -25,6 +25,14 @@ class Tournament(models.Model):
     def __str__(self):
         return self.urlfortournement
 
+
+class NotScraped(models.Model):
+    urlfornotscraped = models.URLField(max_length=1000)
+
+    def __str__(self):
+        return self.urlfornotscraped
+
+        
 class TournamentInfo(models.Model):
     urltournement = models.ForeignKey(Tournament,related_name="urlfortour",on_delete=models.CASCADE)
     champ = models.TextField(max_length=1000)
@@ -37,6 +45,9 @@ class TournamentInfo(models.Model):
     phases = models.TextField(max_length=1000)
     locations = models.TextField(max_length=1000)
     isfinished = models.BooleanField()
+
+    def __str__(self):
+        return self.champ
 
 class Matches(models.Model):
     champ = models.ForeignKey(TournamentInfo,related_name="champinfo",on_delete=models.CASCADE)
@@ -51,6 +62,8 @@ class Matches(models.Model):
     isteam = models.TextField(max_length=1000)
     hascomps = models.TextField(max_length=1000)
 
+    def __str__(self):
+        return self.key
 
 class Players(models.Model):
     match = models.ForeignKey(Matches,related_name="match",on_delete=models.CASCADE)

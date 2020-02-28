@@ -9,4 +9,5 @@ urlpatterns = [
     path('xml2',playerxml2,name='xml2'),
     path('info',tournamentinfo,name='infoxml'),
     path('fixtures',fixtures,name="fixtures"),
+
 ]

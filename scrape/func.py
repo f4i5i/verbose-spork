@@ -48,6 +48,13 @@ def get_daily_schedule(clean_url_list):
     return url_list,url_removed
 
 
+
+
+
+
+
+
+
 # # https://results.ittf.com/ittf-web-results/html/TTE5019/champ.json
 # def get_data(url_list):
 #     # durl = []
