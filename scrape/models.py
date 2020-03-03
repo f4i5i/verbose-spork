@@ -77,5 +77,8 @@ class Players(models.Model):
     away_orgdesc = models.TextField(max_length=1000)
     team_a = models.TextField(max_length=1000,null=True,blank=True)
     team_b = models.TextField(max_length=1000,null=True,blank=True)
+
+ 
+
     
         
