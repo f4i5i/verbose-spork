@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+from .models import Scrapeable, NotScraped
+
+
 
 HEADERS =  {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"}
 
@@ -36,12 +39,15 @@ def get_daily_schedule(clean_url_list):
         link = soup.find('a',text=re.compile('Daily Schedule'))
         if link != None:
             url_list.append(link.get('href'))
-            print("This is Url with daily {}".format(link))
+            var = link.get('href')
             # response_delay = time.time() - t0
+            scrape = Scrapeable.objects.get_or_create(urlfortour=var)
+            print(scrape)
             time.sleep(10)
         else:
             url_removed.append(url)
-            print("This is Url with no daily {}".format(link))
+            notscraped = NotScraped.objects.get_or_create(urlfornotscraped=url)
+            print(notscraped)
             # response_delay = time.time() - t0
             time.sleep(10)
     

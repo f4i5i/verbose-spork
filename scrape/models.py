@@ -26,6 +26,12 @@ class Tournament(models.Model):
         return self.urlfortournement
 
 
+class Scrapeable(models.Model):
+    urlfortour = models.URLField(max_length=1000)
+    
+    def __str__(self):
+        return self.urlfortour
+
 class NotScraped(models.Model):
     urlfornotscraped = models.URLField(max_length=1000)
 

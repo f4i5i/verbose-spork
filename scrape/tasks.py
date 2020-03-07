@@ -19,8 +19,7 @@ def scrape():
     sub_set = f_urls[13:14]
     sch_list,rv_list = get_daily_schedule(f_urls)
     for url in sch_list:
-        tour = Tournament(urlfortournement=url)
-        tour.save()
+        tour = Tournament.objects.get_or_create(urlfortournement=url)
         new_url = url[:55]+"champ.json"
         print(new_url)
         champ_data = requests.get(new_url,headers=HEADERS,timeout=30).json()
@@ -34,13 +33,12 @@ def scrape():
         champPhases = [j['Desc'] for j in champ_data['phases']]
         champLocations = champ_data['locations']
         champFinished = champ_data['isFinished']
-        champ = TournamentInfo(urltournement=tour,champ=champName,
+        champ = TournamentInfo.objects.get_or_create(urltournement=tour,champ=champName,
                                 status=champStatus,dates=champDates,
                                 datesdesc=champDateDesc,champdesc=champDesc,
                                 location = champLocation,events=champeEvent,
                                 phases=champPhases,locations=champLocations,
                                 isfinished=champFinished)
-        champ.save()
         
         for i in range(len(champ_data['dates'])):
             durl= url[:55]+"match/d"+champ_data['dates'][i]['raw']+'.json'
@@ -62,17 +60,17 @@ def scrape():
                 away_var_reg = data[i]['Away']['Reg']
                 away_var_org = data[i]['Away']['Org']
                 away_var_orgdesc = data[i]['Away']['OrgDesc']
-                match = Matches(champ=champ,key=var_key,desc=var_desc,
+                match = Matches.objects.get_or_create(champ=champ,key=var_key,desc=var_desc,
                                 time=var_time,loc=var_loc,locdesc=var_locdesc,
                                 venue =var_venue,rtime=var_rtime,status = var_status,
                                 isteam=var_isteam,hascomps=var_hascomps)
-                match.save()
+            
                 Home = data[i]['Home']['Desc']
                 Away = data[i]['Away']['Desc']
                 has_stat = data[i]['HasStats']
                 teamA = None
                 teamB = None
-                if var_isteam == False:
+                if var_isteam != True:
                     try:
                         ply = Players.objects.get_or_create(match=match,home=Home,away=Away,
                                     home_reg=home_var_reg,home_org=home_var_org,home_orgdesc=home_var_orgdesc,

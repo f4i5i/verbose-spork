@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     #installed apps
      "django_rq",
      'rest_framework',
+     'django_admin_listfilter_dropdown',
 ]
 
 REST_FRAMEWORK = {
@@ -91,18 +92,18 @@ WSGI_APPLICATION = 'ittfApp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'temp.sqlite3'),
-    # }
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432
-        }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'ittf.sqlite3'),
+     }
+    #    'default': {
+    #    'ENGINE': 'django.db.backends.postgresql',
+    #    'NAME': 'postgres',
+    #    'USER': 'postgres',
+    #    'PASSWORD': 'postgres',
+    #    'HOST': 'db',
+    #    'PORT': 5432
+    #    }
 }
 
 
@@ -143,10 +144,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
 
 RQ_QUEUES = {
     'default': {
-        'HOST': '172.19.0.2',
+        'HOST': '127.0.0.1',
         'PORT': 6379,
         'DB': 0,
         # 'PASSWORD': 'yourpassword',
