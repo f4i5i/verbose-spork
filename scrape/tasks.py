@@ -17,7 +17,7 @@ def scrape():
     all_urls =get_ittf_url(url)
     f_urls = filter_list(all_urls)
     sub_set = f_urls[13:14]
-    sch_list,rv_list = get_daily_schedule(sub_set)
+    sch_list,rv_list = get_daily_schedule(f_urls)
     for url in sch_list:
         tour = Tournament(urlfortournement=url)
         tour.save()

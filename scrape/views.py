@@ -36,9 +36,9 @@ def playerxml2(request):
             x = ET.SubElement(b,'match')
             x.text = str(Matches.objects.get(pk=data1[i][1]))
             c = ET.SubElement(b,'home')
-            c.text = data1[i][2].capitalize()
+            c.text = data1[i][2].capitalize().replace('/',' & ')
             d = ET.SubElement(b,'away')
-            d.text = data1[i][3].capitalize()
+            d.text = data1[i][3].capitalize().replace('/',' & ')
             y = ET.SubElement(b,'TeamA')
             y.text = data1[i][10]
             z = ET.SubElement(b,'TeamB')
