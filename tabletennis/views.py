@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponse
+import requests
 
 import django_rq
 # Create your views here.
 from .tasks import scrape
-from .models import Phases
+from .models import Phases,RawData
 
 def view1(request):
     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
@@ -11,5 +12,5 @@ def view1(request):
     return HttpResponse("Scraping..........")
 
 def view2(request):
-    phase = Phases.objects.all()
-    return HttpResponse(phase[1].id)
+    
+    return HttpResponse("some")

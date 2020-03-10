@@ -21,6 +21,9 @@ class Table(models.Model):
     desc = models.CharField(max_length=100)
 
 
+
+
+
 class Competition(models.Model):
     champ = models.CharField(primary_key=True,max_length=100)
     description = models.TextField(max_length=1000)
@@ -28,8 +31,9 @@ class Competition(models.Model):
     isfinished = models.BooleanField()
     url = models.URLField(max_length=1000)
     raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.CASCADE,blank=True,null=True)
-    phase_comp = models.ManyToManyField(Phases,related_name="competition_phases",blank=True)
-    table_comp = models.ManyToManyField(Table,related_name="competition_table",blank=True)
+    phase_comp = models.ManyToManyField(Phases,related_name="competition_phases",default=None)
+    table_comp = models.ManyToManyField(Table,related_name="competition_table",default=None)
+
 
 
 
