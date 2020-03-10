@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #custom apps
     'users.apps.UsersConfig',
     'scrape.apps.ScrapeConfig',
+    'tabletennis.apps.TabletennisConfig',
 
     #installed apps
      "django_rq",
