@@ -126,5 +126,13 @@ def champ_json(url):
     except Exception as e:
         print(e)
     
-    return r_json
+    if r_json: 
+        return r_json
+    else:
+        try:
+            r_json = requests.get(url,headers=HEADERS,timeout=160).json()
+            return r_json
+        except Exception as e:
+            print(e)
+
 
