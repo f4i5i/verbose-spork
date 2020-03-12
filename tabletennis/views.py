@@ -20,7 +20,7 @@ def view2(request):
 def view3(request):
     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
     queue.enqueue(get_country)
-    return HttpResponse("Scraping Country..........")
+    return HttpResponse("Scraping Country's..........")
 
 
 def view4(request):
