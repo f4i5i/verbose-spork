@@ -31,6 +31,7 @@ class MatchRawAdmin(admin.ModelAdmin):
 class MatchAdmin(admin.ModelAdmin):
     list_display = ('comp_id','home_player','away_player','away_team','home_team','venue','time','table','created_at','match','phase_')
     list_filter = (('match',DropdownFilter),)
+    search_fields = ('venue',)
 
 admin.site.register(Competition,CompAdmin)
 admin.site.register(RawData)
