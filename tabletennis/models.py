@@ -45,7 +45,12 @@ class MatchRawData(models.Model):
     comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
+    def Competition_id(self):
+        try:
+            return self.comp.champ
+        except Exception as e:
+            return "Error:%s" % str(e)
 
 
 
@@ -64,6 +69,12 @@ class Player(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def country(self):
+        try:
+            return self.org.short_name
+        except Exception as e:
+            return "Error:%s" % str(e)
+
 
 
 class Team(models.Model):
@@ -77,10 +88,10 @@ class Team(models.Model):
 
 class Match(models.Model):
     comp = models.ForeignKey(Competition,related_name="champ_competition",on_delete=models.CASCADE)
-    home = models.ForeignKey(Player,related_name="home",on_delete=models.CASCADE)
-    away = models.ForeignKey(Player,related_name="away",on_delete=models.CASCADE)
-    team_home = models.ForeignKey(Team,related_name="teams_home",on_delete=models.CASCADE)
-    team_away = models.ForeignKey(Team,related_name="teams_away",on_delete=models.CASCADE)
+    home = models.ForeignKey(Player,related_name="home",on_delete=models.CASCADE,blank=True,null=True)
+    away = models.ForeignKey(Player,related_name="away",on_delete=models.CASCADE,blank=True,null=True)
+    team_home = models.ForeignKey(Team,related_name="teams_home",on_delete=models.CASCADE,blank=True,null=True)
+    team_away = models.ForeignKey(Team,related_name="teams_away",on_delete=models.CASCADE,blank=True,null=True)
     match = models.CharField(max_length=200)
     time = models.CharField(max_length=100)
     venue = models.CharField(max_length=250)
@@ -90,4 +101,42 @@ class Match(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def comp_id(self):
+        try:
+            return self.comp.champ
+        except Exception as e:
+            return "Error:%s" % str(e)
 
+    def home_player(self):
+        try:
+            return self.home.name
+        except Exception as e:
+            return "Error:%s" % str(e)
+
+    def away_player(self):
+        try:
+            return self.away.name
+        except Exception as e:
+            return "Error:%s" % str(e)
+
+    def away_team(self):
+        try:
+            p1 = self.team_away.player1
+            p2 = self.team_away.player2
+            return p1+p2
+        except Exception as e:
+            return "Error:%s" % str(e)
+    
+    def home_team(self):
+        try:
+            p1 = self.home_away.player1
+            p2 = self.home_away.player2
+            return p1+p2
+        except Exception as e:
+            return "Error:%s" % str(e)
+    
+    def phase_(self):
+        try:
+            return self.phase.desc
+        except Exception as e:
+            return "Error:%s" % str(e)
