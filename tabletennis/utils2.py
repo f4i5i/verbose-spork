@@ -142,6 +142,9 @@ def get_match_data():
         url = raw_data[i].url
         champ_id = raw_data[i].comp
         r = requests.get(url,headers=HEADERS,timeout=160).json()
+        print('-----------------------------------------------')
+        print(url)
+        print('-----------------------------------------------')
         time.sleep(10)
         if r:
             for j in range(len(r)):
@@ -190,8 +193,8 @@ def get_match_data():
 
                     ply1_away,created_ply1_away = Player.objects.get_or_create(name=player1_away,org=c_away1)
                     ply2_away,created_ply2_away = Player.objects.get_or_create(name=player2_away,org=c_away2)
-                    print(ply1_home)
-                    print(ply1_away)
+                    
+                
                     
                     team_home,created_team_home = Team.objects.get_or_create(player1=ply1_home,player2=ply2_home)
                     team_away,created_team_away = Team.objects.get_or_create(player1=ply1_away,player2=ply2_away)
