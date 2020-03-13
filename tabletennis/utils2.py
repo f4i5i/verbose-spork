@@ -150,6 +150,7 @@ def get_match_data():
             for j in range(len(r)):
                 key = r[j]['Key'].replace('-','').split('.')[:-1]
                 key = '.'.join(key)
+                
                 phase = Phases.objects.get(key=key)
                 Desc = r[j]['Desc'].split('-')[:-1]
                 Desc = '-'.join(Desc)
@@ -160,10 +161,13 @@ def get_match_data():
                 table,_ = Table.objects.get_or_create(key=loc,desc=locdesc)
                 status = int(r[j]['Status'])
                 venue = r[j]['Venue'].strip()
+                
                 home = r[j]['Home']['Desc'].strip()
                 away = r[j]['Away']['Desc'].strip()
+                
                 isTeam_home = r[j]['Home']['Desc'].find('/')
                 isTeam_away = r[j]['Away']['Desc'].find('/')
+                
                 print(home)
                 print(away)
                 if home != 'BYE' and away != 'BYE':
@@ -220,6 +224,7 @@ def get_match_data():
 
                         c_name_home = Country.objects.get(short_name=short_home)
                         c_name_away = Country.objects.get(short_name=short_away)
+                
                         player_home,created9 = Player.objects.get_or_create(name=home,org=c_name_home)
                         player_away,created10 = Player.objects.get_or_create(name=away,org=c_name_away)
                         
