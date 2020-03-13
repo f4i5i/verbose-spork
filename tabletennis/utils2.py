@@ -171,11 +171,21 @@ def get_match_data():
                         players_home = home.split('/')
                         players_away = away.split('/')
 
-                        player1_home = players_home[0]
-                        player2_home = players_home[1]
+                        if players_home != [''] and players_away != ['']:
 
-                        player1_away = players_away[0]
-                        player2_away = players_away[1]
+                            player1_home = players_home[0]
+                            player2_home = players_home[1]
+
+
+                            player1_away = players_away[0]
+                            player2_away = players_away[1]
+                        else:
+                            
+                            player1_home = r[j]['Home']['Members'][0]['Desc']
+                            player2_home = r[j]['Home']['Members'][1]['Desc']
+                                
+                            player1_away = r[j]['Away']['Members'][0]['Desc']
+                            player2_away = r[j]['Away']['Members'][1]['Desc']
 
                         c_p1_home = r[j]['Home']['Members'][0]['Org']
                         c_p2_home = r[j]['Home']['Members'][1]['Org']
