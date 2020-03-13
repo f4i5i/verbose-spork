@@ -120,20 +120,24 @@ class Match(models.Model):
             return "NA"
 
     def away_team(self):
-        try:
-            p1 = self.team_away.player1
-            p2 = self.team_away.player2
-            return print(p1,"/",p2)
-        except Exception as e:
+        if self.team_away:
+            p1 = self.team_away.player1.name
+            p2 = self.team_away.player2.name
+            return (p1+"/"+p2)
+        else:
             return "NA"
+
+    def table_(self):
+        return self.table.desc
     
     def home_team(self):
-        try:
-            p1 = self.home_away.player1
-            p2 = self.home_away.player2
-            return print(p1,"/",p2)
-        except Exception as e:
+        if self.team_home:
+            p1 = self.team_home.player1.name
+            p2 = self.team_home.player2.name
+            return (p1+"/"+p2)
+        else:
             return "NA"
+
     
     def phase_(self):
         try:
