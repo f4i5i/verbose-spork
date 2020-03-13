@@ -123,7 +123,7 @@ class Match(models.Model):
         try:
             p1 = self.team_away.player1
             p2 = self.team_away.player2
-            return p1+p2
+            return print(p1,"/",p2)
         except Exception as e:
             return "NA"
     
@@ -131,7 +131,7 @@ class Match(models.Model):
         try:
             p1 = self.home_away.player1
             p2 = self.home_away.player2
-            return p1+p2
+            return print(p1,"/",p2)
         except Exception as e:
             return "NA"
     
