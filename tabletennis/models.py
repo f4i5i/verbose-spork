@@ -140,3 +140,12 @@ class Match(models.Model):
             return self.phase.desc
         except Exception as e:
             return "Error:%s" % str(e)
+
+
+class Missingdata(models.Model):
+    home = models.CharField(max_length=300)
+    away = models.CharField(max_length=300)
+    url  = models.URLField(max_length=300)
+    phase = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

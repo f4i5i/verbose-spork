@@ -33,6 +33,10 @@ class MatchAdmin(admin.ModelAdmin):
     list_filter = (('match',DropdownFilter),)
     search_fields = ('venue',)
 
+
+class MissingAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Competition,CompAdmin)
 admin.site.register(RawData)
 admin.site.register(Phases,PhasesAdmin)
@@ -42,4 +46,4 @@ admin.site.register(Player,PlayerAdmin)
 admin.site.register(Country,CountryAdmin)
 admin.site.register(MatchRawData,MatchRawAdmin)
 admin.site.register(Team)
-
+admin.site.register(Missingdata)

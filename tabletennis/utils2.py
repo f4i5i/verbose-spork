@@ -3,7 +3,7 @@ import re
 import time
 from bs4 import BeautifulSoup
 
-from .models import Phases,Competition,Table,Country,MatchRawData,Player,Match,Team
+from .models import Phases,Competition,Table,Country,MatchRawData,Player,Match,Team,Missingdata
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"}
 
@@ -159,9 +159,9 @@ def get_match_data():
                 locdesc = r[j]['LocDesc']
                 table,_ = Table.objects.get_or_create(key=loc,desc=locdesc)
                 status = int(r[j]['Status'])
-                venue = r[j]['Venue']
-                home = r[j]['Home']['Desc']
-                away = r[j]['Away']['Desc']
+                venue = r[j]['Venue'].strip()
+                home = r[j]['Home']['Desc'].strip()
+                away = r[j]['Away']['Desc'].strip()
                 isTeam_home = r[j]['Home']['Desc'].find('/')
                 isTeam_away = r[j]['Away']['Desc'].find('/')
                 print(home)
@@ -229,8 +229,7 @@ def get_match_data():
                                                                                 table=table,status=status)
 
                 else:
-                    print(url,'------------------------',home,'-------------',away)
-                        
+                    missing = Missingdata.objects.get_or_create(home=home,away=away,url=url,phase=phase.desc)
 
 
         else:
