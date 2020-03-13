@@ -111,13 +111,13 @@ class Match(models.Model):
         try:
             return self.home.name
         except Exception as e:
-            return "Error:%s" % str(e)
+            return "NA"
 
     def away_player(self):
         try:
             return self.away.name
         except Exception as e:
-            return "Error:%s" % str(e)
+            return "NA"
 
     def away_team(self):
         try:
@@ -125,7 +125,7 @@ class Match(models.Model):
             p2 = self.team_away.player2
             return p1+p2
         except Exception as e:
-            return "Error:%s" % str(e)
+            return "NA"
     
     def home_team(self):
         try:
@@ -133,7 +133,7 @@ class Match(models.Model):
             p2 = self.home_away.player2
             return p1+p2
         except Exception as e:
-            return "Error:%s" % str(e)
+            return "NA"
     
     def phase_(self):
         try:
