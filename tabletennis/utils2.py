@@ -31,79 +31,6 @@ def get_players():
     pass
 
 
-
-
-def get_player_data():
-    raw_data = MatchRawData.objects.all()
-    for i in range(len(raw_data)):
-        url = raw_data[i].url
-        r = requests.get(url,headers=HEADERS,timeout=160).json()
-        time.sleep(10)
-        if r:
-            for j in range(len(r)):
-                # key = r[i]['Key'].replace('-','').split('.')[:-1]
-                # key = '.'.join(key)
-                # Desc = r[i]['Desc'].split('-')[:-1]
-                # Desc = '-'.join(Desc)
-                # match = r[i]['Desc'].split('-')[-1]
-                # time = r[i]['Time']
-                # venue = r[i]['Venue']
-                home = r[j]['Home']['Desc']
-                away = r[j]['Away']['Desc']
-                isTeam_home = r[j]['Home']['Desc'].find('/')
-                isTeam_away = r[j]['Away']['Desc'].find('/')
-                print(home)
-                print(away)
-                if isTeam_home.bit_length() > 1 :
-                    players_home = home.split('/')
-                    players_away = away.split('/')
-
-                    player1_home = players_home[0]
-                    player2_home = players_home[1]
-
-                    player1_away = players_away[0]
-                    player2_away = players_away[1]
-
-                    c_p1_home = r[j]['Home']['Members'][0]['Org']
-                    c_p2_home = r[j]['Home']['Members'][1]['Org']
-
-                    c_p1_away = r[j]['Away']['Members'][0]['Org']
-                    c_p2_away = r[j]['Away']['Members'][1]['Org']
-
-                    c_home1 = Country.objects.get(short_name=c_p1_home)
-                    c_home2 = Country.objects.get(short_name=c_p2_home)
-
-                    c_away1 = Country.objects.get(short_name=c_p1_away)
-                    c_away2 = Country.objects.get(short_name=c_p2_away)
-
-                    ply1_home,created5 = Player.objects.get_or_create(name=player1_home,org=c_home1)
-                    ply2_home,created6 = Player.objects.get_or_create(name=player2_home,org=c_home2)
-
-                    ply1_away,created7 = Player.objects.get_or_create(name=player1_away,org=c_away1)
-                    ply2_away,created8 = Player.objects.get_or_create(name=player2_away,org=c_away2)
-                    print(ply1_home)
-                    print(ply1_away)
-                    
-                    team_home = Team.objects.get_or_create(player1=ply1_home,player2=ply2_home)
-                    team_away = Team.objects.get_or_create(player1=ply1_away,player2=ply2_away)
-                else:
-                    short_away = r[j]['Away']['Org']
-
-                    short_home = r[j]['Home']['Org']
-
-                    c_name_home = Country.objects.get(short_name=short_home)
-                    c_name_away = Country.objects.get(short_name=short_away)
-                    player_home,created9 = Player.objects.get_or_create(name=home,org=c_name_home)
-                    player_away,created10 = Player.objects.get_or_create(name=away,org=c_name_away)
-
-
-
-        else:
-            print(url)    
-   
-
-
-
 def get_country():
     link = "https://results.ittf.link/index.php?option=com_fabrik&view=list&listid=37&Itemid=154&resetfilters=0&clearordering=0&clearfilters=0&limitstart37=0"
     link1 = link[:144]+"50"
@@ -150,7 +77,7 @@ def get_match_data():
             for j in range(len(r)):
                 key = r[j]['Key'].replace('-','').split('.')[:-1]
                 key = '.'.join(key)
-                
+        
                 phase = Phases.objects.get(key=key)
                 Desc = r[j]['Desc'].split('-')[:-1]
                 Desc = '-'.join(Desc)
@@ -161,13 +88,13 @@ def get_match_data():
                 table,_ = Table.objects.get_or_create(key=loc,desc=locdesc)
                 status = int(r[j]['Status'])
                 venue = r[j]['Venue'].strip()
-                
+        
                 home = r[j]['Home']['Desc'].strip()
                 away = r[j]['Away']['Desc'].strip()
-                
+        
                 isTeam_home = r[j]['Home']['Desc'].find('/')
                 isTeam_away = r[j]['Away']['Desc'].find('/')
-                
+        
                 print(home)
                 print(away)
                 if home != 'BYE' and away != 'BYE':
@@ -184,10 +111,10 @@ def get_match_data():
                             player1_away = players_away[0]
                             player2_away = players_away[1]
                         else:
-                            
+                    
                             player1_home = r[j]['Home']['Members'][0]['Desc']
                             player2_home = r[j]['Home']['Members'][1]['Desc']
-                                
+                        
                             player1_away = r[j]['Away']['Members'][0]['Desc']
                             player2_away = r[j]['Away']['Members'][1]['Desc']
 
@@ -208,12 +135,12 @@ def get_match_data():
 
                         ply1_away,created_ply1_away = Player.objects.get_or_create(name=player1_away,org=c_away1)
                         ply2_away,created_ply2_away = Player.objects.get_or_create(name=player2_away,org=c_away2)
-                        
-                    
-                        
+                
+            
+                
                         team_home,created_team_home = Team.objects.get_or_create(player1=ply1_home,player2=ply2_home)
                         team_away,created_team_away = Team.objects.get_or_create(player1=ply1_away,player2=ply2_away)
-                    
+            
                         matchteam,created_match = Match.objects.get_or_create(comp=champ_id,team_home=team_home,team_away=team_away,
                                                                                 match=match,time=time_,venue=venue,phase=phase,
                                                                                 table=table,status=status)
@@ -224,11 +151,11 @@ def get_match_data():
 
                         c_name_home = Country.objects.get(short_name=short_home)
                         c_name_away = Country.objects.get(short_name=short_away)
-                
+        
                         player_home,created9 = Player.objects.get_or_create(name=home,org=c_name_home)
                         player_away,created10 = Player.objects.get_or_create(name=away,org=c_name_away)
-                        
-                        
+                
+                
                         matchsingle,created_match = Match.objects.get_or_create(comp=champ_id,home=player_home,away=player_away,
                                                                                 match=match,time=time_,venue=venue,phase=phase,
                                                                                 table=table,status=status)
@@ -239,3 +166,31 @@ def get_match_data():
 
         else:
             print(url)    
+
+
+
+
+def get_player_data():
+    url =  "https://results.ittf.link/index.php?option=com_fabrik&view=list&listid=35&Itemid=155&resetfilters=0&clearordering=0&clearfilters=0&limit35=100&limitstart35="
+
+    for i in range(0,37601,100):
+        new_str = str(i)
+    
+        req = requests.get(url+new_str,headers=HEADERS,timeout=60).text
+        sp = BeautifulSoup(req,'html.parser')
+        ply_id = sp.find_all('td',class_="fab_players___player_id fabrik_element fabrik_list_35_group_36 integer")
+        tds = sp.find_all('td',class_="fab_players___name fabrik_element fabrik_list_35_group_36")
+        asc = sp.find_all('td', class_ = "fab_players___assoc fabrik_element fabrik_list_35_group_36")
+        gen = sp.find_all('td', class_= "fab_players___gender fabrik_element fabrik_list_35_group_36")
+        dob = sp.find_all('td',class_ = "fab_players___yob fabrik_element fabrik_list_35_group_36")
+        active = sp.find_all('td',class_="fab_players___activity fabrik_element fabrik_list_35_group_36")
+        for p in range(len(tds)):
+            p_id = ply_id[p].text.strip()
+            p_name = tds[p].text.strip()
+            p_org = asc[p].text.strip()
+            p_gen = gen[p].text.strip()
+            p_dob = dob[p].text.strip()
+            p_act = active[p].text.strip()
+
+            p_country, _ = Country.objects.get_or_create(short_name=p_org)
+            ply,created = Player.objects.get_or_create(player_id= p_id,name= p_name,org= p_country,gender= p_gen,dob= p_dob,activity= p_act)

@@ -20,7 +20,7 @@ class CountryAdmin(admin.ModelAdmin):
     list_display = ('name','short_name')
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('name','country')
+    list_display = ('player_id','name','country')
 
 class TableAdmin(admin.ModelAdmin):
     list_display = ('key','desc')

@@ -63,9 +63,12 @@ class Country(models.Model):
 
 
 class Player(models.Model):
+    player_id = models.CharField(primary_key=True,max_length=200)
     name = models.TextField(max_length=1000)
     org = models.ForeignKey(Country,related_name="country",on_delete=models.CASCADE)
+    gender = models.CharField(max_length=50)
     dob = models.CharField(max_length=100,blank=True,null=True)
+    activity = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
