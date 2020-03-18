@@ -93,18 +93,18 @@ WSGI_APPLICATION = 'ittfApp.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'ittf.sqlite3'),
-     }
-    #    'default': {
-    #    'ENGINE': 'django.db.backends.postgresql',
-    #    'NAME': 'postgres',
-    #    'USER': 'postgres',
-    #    'PASSWORD': 'postgres',
-    #    'HOST': 'db',
-    #    'PORT': 5432
-    #    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'ittf.sqlite3'), 
+    # }
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME' : 'sports_data',
+        'USER' : 'djangouser',
+        'PASSWORD' : 'GW6T5HX7W3',
+        'HOST' : 'localhost',
+        'PORT' : 3306
+        }
 }
 
 

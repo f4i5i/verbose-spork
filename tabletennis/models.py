@@ -1,9 +1,15 @@
 from django.db import models
 import os
+from django_mysql.models import JSONField
 # Create your models here.
 
+
+
+
+
+
 class RawData(models.Model):
-    raw_data = models.TextField(max_length=10000)
+    raw_data = JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -41,7 +47,7 @@ class Competition(models.Model):
 
 class MatchRawData(models.Model):
     url = models.URLField(max_length=1000)
-    json_data = models.TextField(max_length=50000)
+    json_data = JSONField()
     comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
