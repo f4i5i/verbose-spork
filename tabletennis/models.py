@@ -34,7 +34,7 @@ class Competition(models.Model):
     isfinished = models.BooleanField()
     url = models.URLField(max_length=1000)
     compdates = models.TextField(max_length=1000)
-    raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.CASCADE,blank=True,null=True)
+    raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.PROTECT,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -42,7 +42,7 @@ class Competition(models.Model):
 class MatchRawData(models.Model):
     url = models.URLField(max_length=1000)
     json_data = models.TextField(max_length=50000)
-    comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.CASCADE)
+    comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -65,10 +65,11 @@ class Country(models.Model):
 class Player(models.Model):
     player_id = models.CharField(primary_key=True,max_length=200)
     name = models.TextField(max_length=1000)
-    org = models.ForeignKey(Country,related_name="country",on_delete=models.CASCADE)
+    org = models.ForeignKey(Country,related_name="country",on_delete=models.PROTECT)
     gender = models.CharField(max_length=50)
     dob = models.CharField(max_length=100,blank=True,null=True)
     activity = models.CharField(max_length=100)
+    sport = models.CharField(default="Table Tennis",max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -82,27 +83,33 @@ class Player(models.Model):
 
 class Team(models.Model):
     team_id = models.AutoField(primary_key=True)
-    player1 = models.ForeignKey(Player,related_name="player_1",on_delete=models.CASCADE)
-    player2 = models.ForeignKey(Player,related_name='player_2',on_delete=models.CASCADE)
+    player1 = models.ForeignKey(Player,related_name="player_1",on_delete=models.PROTECT)
+    player2 = models.ForeignKey(Player,related_name='player_2',on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 
 class Match(models.Model):
-    comp = models.ForeignKey(Competition,related_name="champ_competition",on_delete=models.CASCADE)
-    home = models.ForeignKey(Player,related_name="home",on_delete=models.CASCADE,blank=True,null=True)
-    away = models.ForeignKey(Player,related_name="away",on_delete=models.CASCADE,blank=True,null=True)
-    team_home = models.ForeignKey(Team,related_name="teams_home",on_delete=models.CASCADE,blank=True,null=True)
-    team_away = models.ForeignKey(Team,related_name="teams_away",on_delete=models.CASCADE,blank=True,null=True)
+    comp = models.ForeignKey(Competition,related_name="champ_competition",on_delete=models.PROTECT)
+    home = models.ForeignKey(Player,related_name="home",on_delete=models.PROTECT,blank=True,null=True)
+    away = models.ForeignKey(Player,related_name="away",on_delete=models.PROTECT,blank=True,null=True)
+    team_home = models.ForeignKey(Team,related_name="teams_home",on_delete=models.PROTECT,blank=True,null=True)
+    team_away = models.ForeignKey(Team,related_name="teams_away",on_delete=models.PROTECT,blank=True,null=True)
     match = models.CharField(max_length=200)
     time = models.CharField(max_length=100)
     venue = models.CharField(max_length=250)
-    phase = models.ForeignKey(Phases,related_name='match_phase',on_delete=models.CASCADE)
-    table = models.ForeignKey(Table,related_name="loc",on_delete=models.CASCADE)
+    phase = models.ForeignKey(Phases,related_name='match_phase',on_delete=models.PROTECT)
+    table = models.ForeignKey(Table,related_name="loc",on_delete=models.PROTECT)
     status = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    def delete(self,*args,**kwargs):
+        fix = DeletedFixture(fixture = self)
+        fix.save()
+        super().delete(*args,**kwargs)
+
 
     def comp_id(self):
         try:
@@ -147,6 +154,11 @@ class Match(models.Model):
             return self.phase.desc
         except Exception as e:
             return "Error:%s" % str(e)
+
+
+
+class DeletedFixture(models.Model):
+    fixture = models.ForeignKey(Match,on_delete=models.PROTECT)
 
 
 class Missingdata(models.Model):
