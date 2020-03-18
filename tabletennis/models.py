@@ -30,7 +30,8 @@ class Table(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
+    def __str__(self):
+        return self.desc
 
 
 class Competition(models.Model):
@@ -43,6 +44,9 @@ class Competition(models.Model):
     raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.PROTECT,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.champ
 
 
 class MatchRawData(models.Model):
@@ -66,7 +70,8 @@ class Country(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
+    def __str__(self):
+        return self.name
 
 class Player(models.Model):
     player_id = models.CharField(primary_key=True,max_length=200)
@@ -79,6 +84,9 @@ class Player(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.player_id
+  
     def country(self):
         try:
             return self.org.short_name
@@ -93,6 +101,8 @@ class Team(models.Model):
     player2 = models.ForeignKey(Player,related_name='player_2',on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
 
 
 class Match(models.Model):

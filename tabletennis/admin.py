@@ -20,7 +20,9 @@ class CountryAdmin(admin.ModelAdmin):
     list_display = ('name','short_name')
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('player_id','name','country','dob','gender','sport')
+    list_display = ('player_id','name','country','dob','gender','sport','created_at','updated_at')
+    list_filter = ('gender',)
+    search_fields = ('player_id','name')
 
 class TableAdmin(admin.ModelAdmin):
     list_display = ('key','desc')
