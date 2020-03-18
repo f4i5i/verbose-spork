@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import view1,view2,view3,view4,view5
+from .views import view1,view2,view3,view4,view5,PlayersXml
 
 urlpatterns = [
     path('',view1,name="view1"),
@@ -7,5 +7,6 @@ urlpatterns = [
     path('v3',view3,name="view3"),
     path('v4',view4,name="view4"),
     path('v5',view5,name="view5"),
+    path('Players',PlayersXml,name="playersfeed"),
 
 ]

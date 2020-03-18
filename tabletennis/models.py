@@ -165,6 +165,8 @@ class Match(models.Model):
 
 class DeletedFixture(models.Model):
     fixture = models.ForeignKey(Match,on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Missingdata(models.Model):
