@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import django_rq
 # Create your views here.
 from .tasks import scrape
-from .models import Phases,RawData,Competition,Player,Country
+from .models import Phases,RawData,Competition,Player,Country,MatchRawData
 from .utils2 import get_match_urls,get_country,get_player_data,get_match_data
 
 def view1(request):
@@ -55,3 +55,8 @@ def PlayersXml(request):
     
     xmlfeed = ET.tostring(root_element)
     return HttpResponse(xmlfeed,content_type="application/xml")
+
+def view6(request):
+    data =  MatchRawData.objects.all().values_list()
+    data1 = data[2][2][1]
+    return HttpResponse(data1)

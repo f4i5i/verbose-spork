@@ -50,3 +50,5 @@ admin.site.register(MatchRawData,MatchRawAdmin)
 admin.site.register(Team)
 admin.site.register(Missingdata)
 admin.site.register(DeletedFixture)
+admin.site.register(MatchIssue)
+

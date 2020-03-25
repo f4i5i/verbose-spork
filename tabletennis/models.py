@@ -186,3 +186,16 @@ class Missingdata(models.Model):
     phase = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class MatchIssue(models.Model):
+    champ = models.CharField(max_length=200)
+    phase = models.CharField(max_length=300)
+    url = models.URLField()
+    home = models.TextField(max_length=1000)
+    away = models.TextField(max_length=1000)
+    Desc = models.CharField(max_length= 200)
+    match = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    error = models.TextField(max_length=1000)
