@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('',include('scrape.urls')),
     path('tt/',include('tabletennis.urls')),
+    path('Players/',include('players.urls')),
     path('django-rq/',include('django_rq.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

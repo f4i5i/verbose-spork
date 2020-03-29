@@ -16,13 +16,6 @@ class CompAdmin(admin.ModelAdmin):
     list_filter = (('location',DropdownFilter),)
     search_fields = ('champ','location','description')
 
-class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name','short_name')
-
-class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('player_id','name','country','dob','gender','sport','created_at','updated_at')
-    list_filter = ('gender',)
-    search_fields = ('player_id','name')
 
 class TableAdmin(admin.ModelAdmin):
     list_display = ('key','desc')
@@ -30,25 +23,11 @@ class TableAdmin(admin.ModelAdmin):
 class MatchRawAdmin(admin.ModelAdmin):    
     list_display = ('Competition_id','url')
 
-class MatchAdmin(admin.ModelAdmin):
-    list_display = ('comp_id','home_player','away_player','away_team','home_team','venue','time','table_','created_at','match','phase_')
-    list_filter = (('match',DropdownFilter),)
-    search_fields = ('venue',)
 
-
-class MissingAdmin(admin.ModelAdmin):
-    pass
 
 admin.site.register(Competition,CompAdmin)
 admin.site.register(RawData)
 admin.site.register(Phases,PhasesAdmin)
 admin.site.register(Table,TableAdmin)
-admin.site.register(Match,MatchAdmin)
-admin.site.register(Player,PlayerAdmin)
-admin.site.register(Country,CountryAdmin)
 admin.site.register(MatchRawData,MatchRawAdmin)
-admin.site.register(Team)
-admin.site.register(Missingdata)
-admin.site.register(DeletedFixture)
-admin.site.register(MatchIssue)
 

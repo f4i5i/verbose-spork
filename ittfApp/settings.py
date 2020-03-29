@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'scrape.apps.ScrapeConfig',
     'tabletennis.apps.TabletennisConfig',
+    'players.apps.PlayersConfig',
 
     #installed apps
      "django_rq",
      'rest_framework',
      'django_admin_listfilter_dropdown',
+     'import_export',
 ]
 
 REST_FRAMEWORK = {
