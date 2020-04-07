@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/rocket1337/my_projects/django_scrape/env"
+VIRTUAL_ENV='/home/rocket1337/Ittf/env'
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

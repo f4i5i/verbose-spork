@@ -11,11 +11,13 @@ from .models import *
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name','code')
     search_fields = ('name',)
-
 @admin.register(Sport)
 class SportAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('id','name','code')
     search_fields = ('name',)
+
+class CityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
+    list_display = ('name','country' )
 
 
 # @admin.register(Sport)
@@ -28,3 +30,4 @@ class PlayerAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 
 admin.site.register(Country,CountryAdmin)
 admin.site.register(Player,PlayerAdmin)
+admin.site.register(City,CityAdmin)

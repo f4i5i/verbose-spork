@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"/home/rocket1337/my_projects/django_scrape/env"
+$VIRTUAL_ENV = r"/home/rocket1337/Ittf/env"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]

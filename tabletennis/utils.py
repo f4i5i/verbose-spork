@@ -3,6 +3,7 @@ import requests
 import re
 import time
 
+from .models import Error
 
 HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"}
 
@@ -104,17 +105,18 @@ def get_worldcup(year):
 
 # Getting champ.json file
 def get_champ_json(links_list):
-    links = {}
+    links = []
     for link in links_list:
         try:
             get_link = BeautifulSoup(requests.get(link,headers=HEADERS,timeout=50).text,'html.parser')
             if not(get_link.is_empty_element):
+                name = get_link.find('h1',class_="media-heading").text
                 key_ = get_link.find('a',text=re.compile('Daily Schedule')).get('href')
                 value_ = key_[:55]+"champ.json"
-                links.update({key_:value_})
+                links.append([name,link,value_])
 
         except Exception as e:
-            print(e)
+            error, _ = Error.objects.get_or_create(url=link,error=e,extra_info=name)
     return links
 
 

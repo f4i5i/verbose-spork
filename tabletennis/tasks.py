@@ -3,8 +3,8 @@ import re
 from bs4 import BeautifulSoup
 import  requests
 import  time
-from .utils import get_world_tour,get_world_champ_comp,get_challange_series,get_worldcup,get_champ_json,champ_json
-from .models import RawData,Phases,Table,Competition
+from .utils import *
+from .models import *
 
 def scrape():
     all_links = []

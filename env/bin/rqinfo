@@ -1,4 +1,4 @@
-#!/home/rocket1337/my_projects/django_scrape/env/bin/python3
+#!/home/rocket1337/Ittf/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -2,68 +2,87 @@ from django.db import models
 import os
 from django_mysql.models import JSONField
 # Create your models here.
-from players.models import Player
+from players.models import Player,Competition,City
 
 
 
 class RawData(models.Model):
+    name = models.TextField()
+    url = models.URLField()
+    country = models.CharField(max_length=254,null=True,blank=True)
     raw_data = JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Phases(models.Model):
-    key = models.CharField(max_length=100)
-    desc = models.CharField(max_length=200)
-    evkey = models.CharField(max_length=100)
-    phase_type = models.CharField(max_length=100)
+class Error(models.Model):
+    url = models.URLField()
+    error = models.TextField()
+    extra_info = models.TextField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+# class Phases(models.Model):
+#     key = models.CharField(max_length=100)
+#     desc = models.CharField(max_length=200)
+#     evkey = models.CharField(max_length=100)
+#     phase_type = models.CharField(max_length=100)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return self.desc
+#     def __str__(self):
+#         return self.desc
 
-class Table(models.Model):
-    key = models.CharField(max_length=100)
-    desc = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Table(models.Model):
+#     key = models.CharField(max_length=100)
+#     desc = models.CharField(max_length=100)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.desc
-
-
-class Competition(models.Model):
-    champ = models.CharField(primary_key=True,max_length=100)
-    description = models.TextField(max_length=1000)
-    location = models.TextField(max_length=1000)
-    isfinished = models.BooleanField()
-    url = models.URLField(max_length=1000)
-    compdates = models.TextField(max_length=1000)
-    raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.PROTECT,blank=True,null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.champ
+#     def __str__(self):
+#         return self.desc
 
 
-class MatchRawData(models.Model):
-    url = models.URLField(max_length=1000)
-    json_data = JSONField()
-    comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.PROTECT)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Competition(models.Model):
+#     champ = models.CharField(primary_key=True,max_length=100)
+#     competition_id = models.ForeignKey(Competition,related_name="competitionid",on_delete=models.PROTECT)
+#     description = models.TextField(max_length=1000)
+#     city = models.ForeignKey(City,related_name="cityofcomp",on_delete=models.PROTECT)
+#     isfinished = models.BooleanField()
+#     url = models.URLField(max_length=1000)
+#     compdates = models.TextField(max_length=1000)
+#     raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.PROTECT,blank=True,null=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         return self.champ
+
+
+# class MatchRawData(models.Model):
+#     url = models.URLField(max_length=1000)
+#     json_data = JSONField()
+#     comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.PROTECT)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
-    def Competition_id(self):
-        try:
-            return self.comp.champ
-        except Exception as e:
-            return "Error:%s" % str(e)
+#     def Competition_id(self):
+#         try:
+#             return self.comp.champ
+#         except Exception as e:
+#             return "Error:%s" % str(e)
 
 
-class Player(models.Model):
-    player_id = models.CharField(primary_key=True,max_length=200)
-    name = models.OneToOneField(Player,related_name='player',on_delete=models.PROTECT)
+# class Player(models.Model):
+#     player_id = models.CharField(primary_key=True,max_length=200)
+#     name = models.OneToOneField(Player,related_name='player',on_delete=models.PROTECT)
+
+
+# class Match(models.Model):
+#     competition = models.ForeignKey(Competition,related_name="tournamentid",on_delete=models.PROTECT)
+#     match_time = models.DateTimeField()
+#     venue = models.CharField(max_length=254)
+#     pass
+
 
 
 

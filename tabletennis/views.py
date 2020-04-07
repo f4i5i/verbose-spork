@@ -2,13 +2,12 @@ from django.shortcuts import render, HttpResponse
 import requests
 import xml.etree.ElementTree as ET
 
-
 import django_rq
 # Create your views here.
 from .tasks import scrape
-from .models import Phases,RawData,Competition,MatchRawData
-from .utils2 import get_match_urls,get_country,get_player_data
-from .playerscraper import get_match_data
+from .models import *
+from .utils2 import *
+from .playerscraper import *
 
 
 def view1(request):

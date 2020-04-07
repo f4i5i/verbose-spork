@@ -12,7 +12,7 @@ class PhasesAdmin(admin.ModelAdmin):
                     ('key',DropdownFilter),)
 
 class CompAdmin(admin.ModelAdmin):
-    list_display = ('champ','description','location', 'url')
+    list_display = ('champ','description', 'url')
     list_filter = (('location',DropdownFilter),)
     search_fields = ('champ','location','description')
 

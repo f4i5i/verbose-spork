@@ -7,6 +7,16 @@ class Country(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
+class City(models.Model):
+    name = models.CharField(max_length=254)
+    country = models.ForeignKey(Country,related_name="countrypartof",on_delete=models.PROTECT)
+    subcountry = models.CharField(max_length=254)
+    geonameid = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Sport(models.Model):
     name = models.CharField(max_length=254)
     code = models.CharField(max_length=50)
@@ -32,4 +42,31 @@ class Competition(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Season(models.Model):
+    year = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+class Draw(models.Model):
+    draw_type = models.CharField(max_length=254)
+    code = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Round(models.Model):
+    name = models.CharField(max_length=254)
+    code = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Group(models.Model):
+    name = models.CharField(max_length=254)
+    code = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Qualification(models.Model):
+    name = models.CharField(max_length=254)
+    code = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

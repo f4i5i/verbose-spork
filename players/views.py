@@ -1,6 +1,5 @@
 from django.shortcuts import render,HttpResponse
 from django.views.generic import ListView
-from .filters import PlayerFilter
 import xml.etree.ElementTree as ET
 from .models import *
 
