@@ -19,10 +19,12 @@ def playerview(request,id,country,sport):
         return HttpResponse(player)
 
 def testview(request):
-    para1 = request.GET.get('id')
-    para2 = request.GET.get('name')
-    para3 = request.GET.get('country')
+    filter_args = request.GET.dict()
+    new_dict = {}
+    for k,v in filter_args.items():
+        if v != None:
+            new_dict.update({k:v})
 
-    res = para1 + " " + para2 + " " + para3 
+   
 
-    return HttpResponse(res)
+    return HttpResponse(new_dict.values())

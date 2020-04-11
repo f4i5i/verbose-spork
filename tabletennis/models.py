@@ -2,7 +2,7 @@ from django.db import models
 import os
 from django_mysql.models import JSONField
 # Create your models here.
-from players.models import Player,Competition,City
+from players.models import City,Player
 
 
 
@@ -20,6 +20,14 @@ class Error(models.Model):
     extra_info = models.TextField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Player(models.Model):
+    player_id = models.CharField(primary_key=True,max_length=200)
+    player_key = models.ForeignKey(Player,related_name="playermain",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)  
+
 
 # class Phases(models.Model):
 #     key = models.CharField(max_length=100)

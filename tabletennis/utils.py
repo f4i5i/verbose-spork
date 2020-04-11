@@ -103,22 +103,6 @@ def get_worldcup(year):
     return links
 
 
-# Getting champ.json file
-def get_champ_json(links_list):
-    links = []
-    for link in links_list:
-        try:
-            get_link = BeautifulSoup(requests.get(link,headers=HEADERS,timeout=50).text,'html.parser')
-            if not(get_link.is_empty_element):
-                name = get_link.find('h1',class_="media-heading").text
-                key_ = get_link.find('a',text=re.compile('Daily Schedule')).get('href')
-                value_ = key_[:55]+"champ.json"
-                links.append([name,link,value_])
-
-        except Exception as e:
-            error, _ = Error.objects.get_or_create(url=link,error=e,extra_info=name)
-    return links
-
 
 # Getting Data from champ.json
 def champ_json(url):
@@ -135,6 +119,29 @@ def champ_json(url):
             r_json = requests.get(url,headers=HEADERS,timeout=160).json()
             return r_json
         except Exception as e:
-            print(e)
+            error, _ = Error.objects.get_or_create(url=url,error=e,extra_info="The function emiting the error is champ_json in utils.py file tabletennis app")
+
+
+
+
+# Getting champ.json file
+def get_champ_json(links_list):
+    links = []
+    for link in links_list:
+        try:
+            get_link = BeautifulSoup(requests.get(link,headers=HEADERS,timeout=50).text,'html.parser')
+            if not(get_link.is_empty_element):
+                name = get_link.find('h1',class_="media-heading").text
+                key_ = get_link.find('a',text=re.compile('Daily Schedule')).get('href')
+                value_ = key_[:55]+"champ.json"
+                json_data = champ_json(value_)
+                links.append([name,link,json_data])
+
+        except Exception as e:
+            error, _ = Error.objects.get_or_create(url=link,error=e,extra_info="The function emiting the error is get_champ_json in utils.py file tabletennis app")
+    return links
+
+
+
 
 

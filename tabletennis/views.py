@@ -26,10 +26,10 @@ def view3(request):
     return HttpResponse("Scraping Country's..........")
 
 
-# def view4(request):
-#     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
-#     queue.enqueue(get_player_data)
-#     return HttpResponse("Scraping Players..........")
+def view4(request):
+    queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
+    queue.enqueue(get_player_data)
+    return HttpResponse("Scraping Players..........")
 
 # def view5(request):
 #     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)

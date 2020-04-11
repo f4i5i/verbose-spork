@@ -24,30 +24,48 @@ def scrape():
 
     temp_json = get_champ_json(all_links)
     
-    for k,v in temp_json.items():
-    
-        json_data = champ_json(v)
+    for link in temp_json:
 
-        champ = json_data['champ']
-        champ_dates = json_data['dates']
-        # comp = Competition.objects.get_or_create(champ=champ)
-        champ_desc = json_data['champDesc']
-        is_finished = json_data['isFinished']
-        loc = json_data['location']
-        raw_data,created = RawData.objects.get_or_create(raw_data=json_data)
-        comp = Competition.objects.get_or_create(champ=champ,description=champ_desc,location=loc,isfinished=is_finished,url=k,raw_comp=raw_data,compdates=champ_dates)
+        name = link[0]
+        url = link[1]
+        rawData = link[2]
 
-        for i in json_data['phases']:
-            key = i['Key'].replace('-','')
-            desc = i['Desc']
-            evkey = i['EvKey'].replace('-','')
-            ev_type = i['Type']
-            phase,created = Phases.objects.get_or_create(key=key,desc=desc,evkey=evkey,phase_type=ev_type)
-            print(phase)
-        for data in json_data['locations']:
-            key = data['Key']
-            desc = data['Desc']
-            table,created = Table.objects.get_or_create(key=key,desc=desc)
-            print(table.id)
+        raw,_ = RawData.objects.get_or_create(name=name,url=url,raw_data=rawData)    
+        print(_)
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+        # json_data = champ_json(v)
+
+        # champ = json_data['champ']
+        # champ_dates = json_data['dates']
+        # # comp = Competition.objects.get_or_create(champ=champ)
+        # champ_desc = json_data['champDesc']
+        # is_finished = json_data['isFinished']
+        # loc = json_data['location']
+        # raw_data,created = RawData.objects.get_or_create(raw_data=json_data)
+        # comp = Competition.objects.get_or_create(champ=champ,description=champ_desc,location=loc,isfinished=is_finished,url=k,raw_comp=raw_data,compdates=champ_dates)
+
+        # for i in json_data['phases']:
+        #     key = i['Key'].replace('-','')
+        #     desc = i['Desc']
+        #     evkey = i['EvKey'].replace('-','')
+        #     ev_type = i['Type']
+        #     phase,created = Phases.objects.get_or_create(key=key,desc=desc,evkey=evkey,phase_type=ev_type)
+        #     print(phase)
+        # for data in json_data['locations']:
+        #     key = data['Key']
+        #     desc = data['Desc']
+        #     table,created = Table.objects.get_or_create(key=key,desc=desc)
+        #     print(table.id)
 
 

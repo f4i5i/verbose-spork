@@ -19,7 +19,6 @@ class SportAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 class CityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('name','country' )
 
-
 # @admin.register(Sport)
 # class SportImportAdmin():
 #     pass
