@@ -9,7 +9,7 @@ from .models import *
 
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name','code')
+    list_display = ('id','name','code')
     search_fields = ('name',)
 @admin.register(Sport)
 class SportAdmin(ImportExportModelAdmin,admin.ModelAdmin):

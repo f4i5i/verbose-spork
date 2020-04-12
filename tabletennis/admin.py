@@ -23,10 +23,12 @@ from .models import *
 # class MatchRawAdmin(admin.ModelAdmin):    
 #     list_display = ('Competition_id','url')
 
-
+class PlayerAdmin(admin.ModelAdmin):
+    list_display = ('player_id','player_key')
 
 # admin.site.register(Competition,CompAdmin)
 admin.site.register(RawData)
+admin.site.register(Player,PlayerAdmin)
 # admin.site.register(Phases,PhasesAdmin)
 # admin.site.register(Table,TableAdmin)
 # admin.site.register(MatchRawData,MatchRawAdmin)

@@ -87,7 +87,7 @@ def get_player_data():
             p_dob = dob[p].text.strip()
             p_act = active[p].text.strip()
 
-            p_country, _ = Country.objects.get_or_create(name=p_org)
+            p_country, _ = Country.objects.get_or_create(code=p_org)
             sport_id = Sport.objects.get(pk=10)
             ply,created = Player.objects.get_or_create(name= p_name,gender= p_gen,dob= p_dob,sport=sport_id,country=p_country)
             tt,boolvalue = TTPlayer.objects.get_or_create(player_id=p_id,player_key=ply)

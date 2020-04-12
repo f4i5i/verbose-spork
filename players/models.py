@@ -10,6 +10,11 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
+    def natural_key(self):
+        return self.name
+
+
+
 class City(models.Model):
     name = models.CharField(max_length=254)
     country = models.ForeignKey(Country,related_name="countrypartof",on_delete=models.PROTECT)
@@ -28,6 +33,9 @@ class Sport(models.Model):
     def __str__(self):
         return self.name
 
+    def natural_key(self):
+        return self.name
+
 class Player(models.Model):
     name = models.TextField(1000)
     gender =  models.CharField(max_length=100)
@@ -36,6 +44,9 @@ class Player(models.Model):
     country = models.ForeignKey(Country,related_name="playercountry",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class CompetitionType(models.Model):
