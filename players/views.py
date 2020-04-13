@@ -39,7 +39,7 @@ def PlayerXML(request):
         if data1[i][5] != None:
             g = ET.SubElement(b,'country',id=str(data1[i][5]))
             cntry = Country.objects.get(pk=data1[i][5])
-            g.text = str(cntry.lower())
+            g.text = str(cntry).lower()
         if data1[i][4] != None:
             f = ET.SubElement(b,'sport',id=str(data1[i][4]))
             sprt = Sport.objects.get(pk=data1[i][4])
