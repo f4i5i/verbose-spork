@@ -31,7 +31,7 @@ def PlayerXML(request):
         name = data1[i][1].strip().lower().split(' ')
         lname = name[-1].capitalize()
         fname = name[0].capitalize()
-        c.text = lname+","+fname
+        c.text = fname+","+" "+lname
         d = ET.SubElement(b,'gender')
         d.text = data1[i][2]
         e = ET.SubElement(b,'dob')
@@ -39,13 +39,11 @@ def PlayerXML(request):
         if data1[i][5] != None:
             g = ET.SubElement(b,'country',id=str(data1[i][5]))
             cntry = Country.objects.get(pk=data1[i][5])
-            g.text = str(cntry)
+            g.text = str(cntry.lower())
         if data1[i][4] != None:
             f = ET.SubElement(b,'sport',id=str(data1[i][4]))
             sprt = Sport.objects.get(pk=data1[i][4])
             f.text = str(sprt)
-        h = ET.SubElement(b,'created_at')
-        h.text = str(data1[i][6])
 
     res = ET.tostring(a)
 
