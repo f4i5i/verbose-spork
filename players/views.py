@@ -1,8 +1,11 @@
 from django.shortcuts import render,HttpResponse
 import xml.etree.ElementTree as ET
+
+from tabletennis.models import *
 from .models import *
 from django.http import QueryDict
 from django.utils import timezone
+
 
 def PlayerXML(request):
     data = request.GET.dict()
@@ -49,3 +52,62 @@ def PlayerXML(request):
 
 
     return HttpResponse(res,content_type="application/xml")
+
+
+
+def TourXML(request):
+    data = request.GET.dict()
+    
+    argsdict = {}
+    season_data = 0
+    comp_type = 0
+    for k,v in data.items():
+        if k == "turid":
+            comp_type = CompetitionType.objects.get(id=v)
+            argsdict.update({"turid":comp_type})
+        if k == "turname":
+            comp_type = CompetitionType.objects.get(name=v)
+            argsdict.update({"turid":comp_type})
+        if k == "snid":
+            season_data = Season.objects.get(snid=v)
+            argsdict.update({"snid":season_data})
+        if k == "tsname":
+            season_data = Season.objects.get(tsname=v)
+            argsdict.update({"snid":season_data})
+    
+    # Creating QuerySet using request.GET dict
+    q = QueryDict('',mutable=True)
+    q.update(argsdict)
+    all_comp = Competition.objects.filter(**q.dict()).values_list()
+    
+    a = ET.Element('tournaments',created_at=str(timezone.now()))
+    for i in range(len(all_comp)):
+        turid = CompetitionType.objects.get(id=all_comp[i][4])
+        sport_id = str(all_comp[i][2])
+        country = str(all_comp[i][3])
+        tour_id = str(all_comp[i][0])
+        tour_name = str(all_comp[i][1])
+        season_info = Season.objects.get(id=all_comp[i][5])
+        tdates = TTCompetition.objects.get(competition_id=all_comp[i])
+        b = ET.SubElement(a,'tournament',turid=str(turid.id),turname=str(turid.name),sptid=sport_id,cntid=country,
+                            trnid=tour_id,trnname=tour_name,tsid=str(season_info.id),tsname=str(season_info.tsname),
+                                tssd=str(tdates.startdate),tsed=str(tdates.enddate),snid=str(season_info.snid),
+                                gen=str(tdates.gender),type=str(tdates.m_type))
+
+
+
+    res = ET.tostring(a)
+
+    return HttpResponse(res,content_type="application/xml")    
+
+
+def StageXML(request):
+    data = request.GET.dict()
+    seasons_data = Season.objects.get(id=data['tsid'])
+
+    a = ET.Element('stages',,created_at=str(timezone.now()))
+    season_id = seasons_data.id
+    season_name = seasons_data.tsname
+    comp = Competition.objects.get(snid=season_id)
+    ttcomp = TTCompetition.objects.get(competition_id=comp)
+    pass    

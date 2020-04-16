@@ -45,7 +45,7 @@ def get_world_champ_comp(year):
         links.append(next_page_url)
     except Exception as e:
         print(e)
-    
+
     return links
 
 
@@ -73,6 +73,7 @@ def get_challange_series(year):
     div = events_soup.find('div',class_="content page-content")
     links = div.find_all('a')
     all_links = [i.get('href') for i in links]
+
     return all_links
 
 
@@ -100,6 +101,7 @@ def get_worldcup(year):
     except Exception as e:
         print(e)
 
+
     return links
 
 
@@ -125,23 +127,27 @@ def champ_json(url):
 
 
 # Getting champ.json file
-def get_champ_json(links_list):
-    links = []
-    for link in links_list:
-        try:
-            get_link = BeautifulSoup(requests.get(link,headers=HEADERS,timeout=50).text,'html.parser')
-            if not(get_link.is_empty_element):
-                name = get_link.find('h1',class_="media-heading").text
-                key_ = get_link.find('a',text=re.compile('Daily Schedule')).get('href')
-                value_ = key_[:55]+"champ.json"
-                json_data = champ_json(value_)
-                links.append([name,link,json_data])
-
-        except Exception as e:
-            error, _ = Error.objects.get_or_create(url=link,error=e,extra_info="The function emiting the error is get_champ_json in utils.py file tabletennis app")
+def get_champ_json(link):
+    try:
+        get_link = BeautifulSoup(requests.get(link,headers=HEADERS,timeout=50).text,'html.parser')
+        if not(get_link.is_empty_element):
+            name = get_link.find('h1',class_="media-heading").text
+            key_ = get_link.find('a',text=re.compile('Daily Schedule')).get('href')
+            value_ = key_[:55]+"champ.json"
+            json_data = champ_json(value_)
+            champ = json_data['champ']
+            champ_desc = json_data['champDesc'].split(',')
+            champ_dates = json_data['dates']
+            champ_loc  = json_data['location']
+            champ_events = json_data['events']
+            champ_phases = json_data['phases']
+            is_fin = json_data['isFinished']
+            
+            links = [name,link,json_data,key_,champ,champ_desc,champ_dates,champ_loc,champ_events,champ_phases,is_fin]
+            
+    except Exception as e:
+        error, _ = Error.objects.get_or_create(url=link,error=e,extra_info="The function emiting the error is get_champ_json in utils.py file tabletennis app")
     return links
-
-
 
 
 

@@ -5,36 +5,38 @@ import  requests
 import  time
 from .utils import *
 from .models import *
+from .matchscrape import tour_info_general
 
 def scrape():
-    all_links = []
-    year = "2019"
-    world_tour = get_world_tour(year)
-    [all_links.append(i) for i in world_tour]
-    time.sleep(10)
-    challenger = get_challange_series(year)
-    [all_links.append(i) for i in challenger]
-    time.sleep(10)
-    world_champ = get_world_champ_comp(year)
-    [all_links.append(i) for i in world_champ]
-    time.sleep(10)
-    worldcup = get_worldcup(year)
-    [all_links.append(i) for i in worldcup]
-
-
-    temp_json = get_champ_json(all_links)
+    world_tour_links = []
+    challenge_series_links = []
+    world_champ_links = []
+    word_cup_links = []
     
-    for link in temp_json:
+    year = "2019"
+    
+    world_tour = get_world_tour(year)
+    [world_tour_links.append(i) for i in world_tour]
+    time.sleep(10)
+    
+    challenger = get_challange_series(year)
+    [challenge_series_links.append(i) for i in challenger]
+    time.sleep(10)
+    
+    world_champ = get_world_champ_comp(year)
+    [world_champ_links.append(i) for i in world_champ]
+    time.sleep(10)
+    
+    worldcup = get_worldcup(year)
+    [word_cup_links.append(i) for i in worldcup]
 
-        name = link[0]
-        url = link[1]
-        rawData = link[2]
 
-        raw,_ = RawData.objects.get_or_create(name=name,url=url,raw_data=rawData)    
-        print(_)
+    tour_info_general(world_tour_links,"World Tour",2019)
+    tour_info_general(challenge_series_links,"Challenge Series",2019)
+    tour_info_general(world_champ_links,"World Championship",2019)
+    tour_info_general(word_cup_links,"World Cup",2019)       
        
-       
-       
+
        
        
        

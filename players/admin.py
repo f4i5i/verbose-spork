@@ -19,9 +19,9 @@ class SportAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 class CityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('name','country' )
 
-# @admin.register(Sport)
-# class SportImportAdmin():
-#     pass
+class CompTypeAdmin(admin.ModelAdmin):
+    list_display = ('id','name')
+
 
 class PlayerAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('id','name','gender','dob','sport','country')
@@ -30,3 +30,6 @@ class PlayerAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 admin.site.register(Country,CountryAdmin)
 admin.site.register(Player,PlayerAdmin)
 admin.site.register(City,CityAdmin)
+admin.site.register(CompetitionType,CompTypeAdmin)
+admin.site.register(Competition)
+admin.site.register(Season)

@@ -2,20 +2,21 @@ from django.db import models
 import os
 from django_mysql.models import JSONField
 # Create your models here.
-from players.models import City,Player
+from players.models import City,Player,Competition
 
 
 
 class RawData(models.Model):
     name = models.TextField()
-    url = models.URLField()
-    country = models.CharField(max_length=254,null=True,blank=True)
+    url = models.TextField()
     raw_data = JSONField()
+    tour_type = models.CharField(max_length=254)
+    is_finished = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class Error(models.Model):
-    url = models.URLField()
+    url = models.TextField()
     error = models.TextField()
     extra_info = models.TextField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,6 +28,42 @@ class Player(models.Model):
     player_key = models.ForeignKey(Player,related_name="playermain",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)  
+
+
+class TTCompetition(models.Model):
+    tour_id = models.CharField(primary_key=True,max_length=254)
+    competition_id = models.ForeignKey(Competition,related_name="competitionid",on_delete=models.PROTECT)
+    finished = models.BooleanField()
+    gender = models.CharField(max_length=254)
+    m_type = models.CharField(max_length=254)
+    startdate = models.CharField(max_length=254)
+    enddate = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)  
+
+class MatchUrl(models.Model):
+    match_url = models.TextField()
+    champ_id = models.ForeignKey(TTCompetition,related_name="TTCompUrls",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+class Event(models.Model):
+    champ_events = models.ForeignKey(TTCompetition,related_name="TTCompEvent",on_delete=models.PROTECT)
+    event_key = models.CharField(max_length=254)
+    event_desc = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+class Phase(models.Model):
+    champ_phase = models.ForeignKey(TTCompetition,related_name="TTCompPhase",on_delete=models.PROTECT)
+    phase_key = models.CharField(max_length=254)
+    phase_desc = models.CharField(max_length=254)
+    phase_evkey = models.CharField(max_length=254)
+    phase_type = models.CharField(max_length=254)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+
 
 
 # class Phases(models.Model):
@@ -56,7 +93,7 @@ class Player(models.Model):
 #     description = models.TextField(max_length=1000)
 #     city = models.ForeignKey(City,related_name="cityofcomp",on_delete=models.PROTECT)
 #     isfinished = models.BooleanField()
-#     url = models.URLField(max_length=1000)
+#     url = models.TextField(max_length=1000)
 #     compdates = models.TextField(max_length=1000)
 #     raw_comp = models.ForeignKey(RawData,related_name="competition_rawdata",on_delete=models.PROTECT,blank=True,null=True)
 #     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,7 +104,7 @@ class Player(models.Model):
 
 
 # class MatchRawData(models.Model):
-#     url = models.URLField(max_length=1000)
+#     url = models.TextField(max_length=1000)
 #     json_data = JSONField()
 #     comp = models.ForeignKey(Competition,related_name="competition",on_delete=models.PROTECT)
 #     created_at = models.DateTimeField(auto_now_add=True)
