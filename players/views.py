@@ -105,7 +105,7 @@ def StageXML(request):
     data = request.GET.dict()
     seasons_data = Season.objects.get(id=data['tsid'])
 
-    a = ET.Element('stages',,created_at=str(timezone.now()))
+    a = ET.Element('stages',created_at=str(timezone.now()))
     season_id = seasons_data.id
     season_name = seasons_data.tsname
     comp = Competition.objects.get(snid=season_id)
