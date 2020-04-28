@@ -100,14 +100,23 @@ def TourXML(request):
 
     return HttpResponse(res,content_type="application/xml")    
 
+# I hope you have compeleted this!!
+# def StageXML(request):
+#     data = request.GET.dict()
+#     seasons_data = Season.objects.get(id=data['tsid'])
 
-def StageXML(request):
-    data = request.GET.dict()
-    seasons_data = Season.objects.get(id=data['tsid'])
+#     a = ET.Element('stages',created_at=str(timezone.now()))
+#     season_id = seasons_data.id
+#     season_name = seasons_data.tsname
+#     comp = Competition.objects.get(snid=season_id)
+#     ttcomp = TTCompetition.objects.get(competition_id=comp)
+#     pass    
 
-    a = ET.Element('stages',created_at=str(timezone.now()))
-    season_id = seasons_data.id
-    season_name = seasons_data.tsname
-    comp = Competition.objects.get(snid=season_id)
-    ttcomp = TTCompetition.objects.get(competition_id=comp)
-    pass    
+
+# SQL Database has the logic 
+def double_player(request):
+    pass
+
+# SQL Database has the logic 
+def Match(request):
+    pass

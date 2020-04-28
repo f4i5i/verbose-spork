@@ -41,6 +41,8 @@ class TTCompetition(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)  
 
+    
+
 class MatchUrl(models.Model):
     match_url = models.TextField()
     champ_id = models.ForeignKey(TTCompetition,related_name="TTCompUrls",on_delete=models.PROTECT)
@@ -64,7 +66,43 @@ class Phase(models.Model):
     updated_at = models.DateTimeField(auto_now=True) 
 
 
+class RawMatchData(models.Model):
+    tt_champ = models.ForeignKey(TTCompetition,related_name="TTCompRawData",on_delete=models.PROTECT)
+    data_json = JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
 
+
+class Match(models.Model):
+    match_date = models.CharField(max_length=254)
+    tourn_id = models.ForeignKey(TTCompetition,related_name="TTCompMatch",on_delete=models.PROTECT)
+    ppstatus = models.CharField(max_length=254)
+    m_time = models.CharField(max_length=254)
+    venue = models.TextField()
+    event = models.ForeignKey(Event,related_name="MatchEvent",on_delete=models.PROTECT)
+    phase = models.ForeignKey(Phase,related_name="MatchPhase",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+class Team(models.Model):
+    player_1 = models.ForeignKey(Player,related_name="P1Team",on_delete=models.PROTECT)
+    player_2 = models.ForeignKey(Player,related_name="P2Team",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
+
+class Single(models.Model):
+    home = models.ForeignKey(Player,related_name="HomePly",on_delete=models.PROTECT)
+    away = models.ForeignKey(Player,related_name="AwayPly",on_delete=models.PROTECT)
+    match = models.ForeignKey(Match,related_name="SingleMatch",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+class Double(models.Model):
+    home_T = models.ForeignKey(Team,related_name="HomeTeam",on_delete=models.PROTECT)
+    away_T = models.ForeignKey(Team,related_name="AwayTeam",on_delete=models.PROTECT)
+    match = models.ForeignKey(Match,related_name="DoubleMatch",on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
 
 # class Phases(models.Model):
 #     key = models.CharField(max_length=100)

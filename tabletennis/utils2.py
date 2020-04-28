@@ -12,24 +12,16 @@ HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT
 
 
 def get_match_urls():
-    pass
-    # comp = Competition.objects.all()
-    # var = {}
-    # for i in range(len(comp)):
-    #     dates = comp[i].compdates.split('},')
-    #     url = comp[i].url
-    #     comp_id= comp[i].champ 
-    #     obj = Competition.objects.get(champ=comp_id)
-    #     for i in range(len(dates)):
-    #         temp = dates[i].replace("'","").split(',')[0].split(":")[1].strip()
-    #         new_url = url[:55]+"match/d"+temp+".json"
-    #         r = requests.get(new_url,headers=HEADERS,timeout=60).json()
-    #         if r:
-    #             raw_data,created = MatchRawData.objects.get_or_create(url=new_url,json_data=r,comp=obj)
-    #             print(raw_data)
-    #             time.sleep(5)
-    #         else:
-    #             print(new_url)
+    comp = TTCompetition.objects.all()
+    for i in comp:
+        if i.finished == True:
+            m_urls = MatchUrl.objects.filter(champ_id=i.tour_id)
+            for url in m_urls:
+                try:
+                    j_data = requests.get(url.match_url,headers=HEADERS,timeout=60).json()
+                    rawmatch,_ = RawMatchData.objects.get_or_create(tt_champ=i,data_json=j_data)
+                except Exception as e:
+                    print(e)
 
 
 def get_country():
