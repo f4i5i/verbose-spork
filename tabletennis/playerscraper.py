@@ -108,4 +108,4 @@ def get_match_data():
 
                       
                 else:
-                    missing_data = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="The match is missing a player/team")
+                    missing_data = MatchScrapingError.objects.get_or_create("missing player data",champ=champ,desc="The match is missing a player/team")
