@@ -32,9 +32,9 @@ def scrape():
 
 
     tour_info_general(world_tour_links,"World Tour",2019)
-    tour_info_general(challenge_series_links,"Challenge Series",2019)
-    tour_info_general(world_champ_links,"World Championship",2019)
-    tour_info_general(word_cup_links,"World Cup",2019)       
+    # tour_info_general(challenge_series_links,"Challenge Series",2019)
+    # tour_info_general(world_champ_links,"World Championship",2019)
+    # tour_info_general(word_cup_links,"World Cup",2019)       
        
 
        
@@ -44,30 +44,3 @@ def scrape():
        
        
        
-       
-       
-        # json_data = champ_json(v)
-
-        # champ = json_data['champ']
-        # champ_dates = json_data['dates']
-        # # comp = Competition.objects.get_or_create(champ=champ)
-        # champ_desc = json_data['champDesc']
-        # is_finished = json_data['isFinished']
-        # loc = json_data['location']
-        # raw_data,created = RawData.objects.get_or_create(raw_data=json_data)
-        # comp = Competition.objects.get_or_create(champ=champ,description=champ_desc,location=loc,isfinished=is_finished,url=k,raw_comp=raw_data,compdates=champ_dates)
-
-        # for i in json_data['phases']:
-        #     key = i['Key'].replace('-','')
-        #     desc = i['Desc']
-        #     evkey = i['EvKey'].replace('-','')
-        #     ev_type = i['Type']
-        #     phase,created = Phases.objects.get_or_create(key=key,desc=desc,evkey=evkey,phase_type=ev_type)
-        #     print(phase)
-        # for data in json_data['locations']:
-        #     key = data['Key']
-        #     desc = data['Desc']
-        #     table,created = Table.objects.get_or_create(key=key,desc=desc)
-        #     print(table.id)
-
-

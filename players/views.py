@@ -113,10 +113,8 @@ def TourXML(request):
 #     pass    
 
 
-# SQL Database has the logic 
 def double_player(request):
     pass
 
-# SQL Database has the logic 
 def Match(request):
     pass

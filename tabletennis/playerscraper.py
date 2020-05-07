@@ -11,121 +11,101 @@ HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHT
 
 
 
-# def get_match_data():
-#     pass
-
-
-
-
 def get_match_data():
-    raw_data = RawMatchData.objects.all()
-    for i in range(len(raw_data)):
-        url = raw_data[i].url
-        champ_id = raw_data[i].comp
-        r = raw_data[i].json_data
-        print('-----------------------------------------------')
-        print(url)
-        print('-----------------------------------------------')
-        if r:
-            for j in range(len(r)):
-                try:
-                    key = r[j]['Key'].replace('-','').split('.')[:-1]
-                    key = '.'.join(key)
-                    key = key.strip()
-                    Desc = r[j]['Desc'].split('-')[:-1]
-                    Desc = '-'.join(Desc)
-                    Desc = Desc.strip()
-                    phase = Phases.objects.get(key=key,desc=Desc)
-                    match = r[j]['Desc'].split('-')[-1]
-                    time_ = r[j]['Time']
-                    loc = r[j]['Loc']
-                    locdesc = r[j]['LocDesc']
-                    table,_ = Table.objects.get_or_create(key=loc,desc=locdesc)
-                    status = int(r[j]['Status'])
-                    venue = r[j]['Venue'].strip()
-                    
+    
+    tt_champ = TTCompetition.objects.all()
+    
+    for champ in tt_champ:
+        match_data = RawMatchData.objects.filter(tt_champ=champ)
 
-                    home = r[j]['Home']['Desc'].strip()
-                    away = r[j]['Away']['Desc'].strip()
-
-
-
-                    isTeam_home = r[j]['Home']['Desc'].find('/')
-                    isTeam_away = r[j]['Away']['Desc'].find('/')
-                    print(phase)
-                    print(home)
-                    print(away)
-                    print(j)
-                    if home != 'BYE' and away != 'BYE':
-                        if isTeam_home.bit_length() > 1 :
-                            players_home = home.split('/')
-                            players_away = away.split('/')
-
-                            if players_home != [''] and players_away != ['']:
-
-                                player1_home = players_home[0]
-                                player2_home = players_home[1]
-
-
-                                player1_away = players_away[0]
-                                player2_away = players_away[1]
-                            else:
+        for match in match_data:
                         
-                                player1_home = r[j]['Home']['Members'][0]['Desc']
-                                player2_home = r[j]['Home']['Members'][1]['Desc']
-                            
-                                player1_away = r[j]['Away']['Members'][0]['Desc']
-                                player2_away = r[j]['Away']['Members'][1]['Desc']
+            json_data = match.data_json
 
-                            c_p1_home = r[j]['Home']['Members'][0]['Org']
-                            c_p2_home = r[j]['Home']['Members'][1]['Org']
-
-                            c_p1_away = r[j]['Away']['Members'][0]['Org']
-                            c_p2_away = r[j]['Away']['Members'][1]['Org']
-
-                            c_home1 = Country.objects.get(short_name=c_p1_home)
-                            c_home2 = Country.objects.get(short_name=c_p2_home)
-
-                            c_away1 = Country.objects.get(short_name=c_p1_away)
-                            c_away2 = Country.objects.get(short_name=c_p2_away)
-
-                            ply1_home,created5 = Player.objects.get_or_create(name=player1_home,org=c_home1)
-                            ply2_home,created6 = Player.objects.get_or_create(name=player2_home,org=c_home2)
-                            print("Home team :",created5,created6)
-
-                            ply1_away,created_ply1_away = Player.objects.get_or_create(name=player1_away,org=c_away1)
-                            ply2_away,created_ply2_away = Player.objects.get_or_create(name=player2_away,org=c_away2)
-                            print("away team",created_ply1_away,created_ply2_away)
-                            
-
-                            team_home,created_team_home = Team.objects.get_or_create(player1=ply1_home,player2=ply2_home)
-                            team_away,created_team_away = Team.objects.get_or_create(player1=ply1_away,player2=ply2_away)
-                
-                            matchteam,created_match = Match.objects.get_or_create(comp=champ_id,team_home=team_home,team_away=team_away,
-                                                                                    match=match,time=time_,venue=venue,phase=phase,
-                                                                                    table=table,status=status)
-                        else:
-                            short_away = r[j]['Away']['Org']
-
-                            short_home = r[j]['Home']['Org']
-
-                            c_name_home = Country.objects.get(short_name=short_home)
-                            c_name_away = Country.objects.get(short_name=short_away)
+            for data in json_data:
             
-                            player_home,created9 = Player.objects.get_or_create(name=home,org=c_name_home)
-                            player_away,created10 = Player.objects.get_or_create(name=away,org=c_name_away)
-                    
-                    
-                            matchsingle,created_match = Match.objects.get_or_create(comp=champ_id,home=player_home,away=player_away,
-                                                                                    match=match,time=time_,venue=venue,phase=phase,
-                                                                                    table=table,status=status)
+                m_date = data["Time"].split(',')[0]
+                match_time= data["RTime"]
+
+                phase = data['Key'].split('.')[:-1]
+                phase = ".".join(phase).strip()
+                phase_db = Phase.objects.get(champ_phase=champ,phase_key=phase)
+
+                m_number = data['Desc'].split('-')[-1].strip()
+
+                event = data['Key'].split('.')[:2]
+                event = ".".join(event)
+                event_db = Event.objects.get(champ_events=champ,event_key=event)
+                venue = data['Venue']
+
+                home = data['Home']['Desc'].strip()
+                away = data['Away']['Desc'].strip()
+
+                isTeam_home = data['Home']['Desc'].find('/')
+                isTeam_away = data['Away']['Desc'].find('/')
+                
+                print(champ)
+                print(home)
+                print(away)
+                print(m_date)
+                print(phase)
+                print("---------------------------------------")
+                if home != 'BYE' and away != 'BYE':
+                    try:
+                        current_match,match_created_or_not = Match.objects.get_or_create(match_date=m_date,tourn_id=champ,ppstatus="PLAYED",
+                                                            m_time=match_time,venue=venue,m_number=m_number,event=event_db,phase=phase_db)
+                    except Exception as e:
+                        match_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While scraping match")
+
+                    if isTeam_home.bit_length() > 1:
+                        home_player1 = data['Home']['Members'][0]['Reg']
+                        home_player2 = data['Home']['Members'][1]['Reg']
+                        
+                        h_ply1 = Player.objects.get(player_id=home_player1)
+                        h_ply2 = Player.objects.get(player_id=home_player2)
+
+                        away_player1 = data['Away']['Members'][0]['Reg']
+                        away_player2 = data['Away']['Members'][1]['Reg']
+
+                        a_ply1 = Player.objects.get(player_id=away_player1)
+                        a_ply2 = Player.objects.get(player_id=away_player2)
+                        # Double Team
+                        try:
+                            team_home,team_H_created_or_not = Team.objects.get_or_create(player_1=h_ply1,player_2=h_ply2)
+                        except Exception as e:
+                            teamH_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While scraping Team Home")
+
+
+                        try:
+                            team_away,team_A_created_or_not = Team.objects.get_or_create(player_1=a_ply1,player_2=a_ply2)
+                        except Exception as e:
+                            teamA_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While scraping Team Away")
+
+                        
+                        try:
+                            double_match,double_created_or_not = Double.objects.get_or_create(home_T=team_home,away_T=team_away,match=current_match)
+                        except Exception as e:
+                            double_errpr = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While Creating or Updating Double Team")
+
 
                     else:
-                        # missing = Missingdata.objects.get_or_create(home=home,away=away,url=url,phase=phase.desc)
+                        # Single Player
+                        home_player = data['Home']['Reg']
+                        away_player = data['Away']['Reg']
+                        
+                        try:
+                            h_ply = Player.objects.get(player_id=home_player)
+                            a_ply = Player.objects.get(player_id=away_player)
 
-                except Exception as e:
-                    # issue = MatchIssue(champ=champ_id,phase=phase,url=url,home=home,away=away,Desc=Desc,match=match,error=e)
-                    # issue.save()  
-                    # j = j+1
-        else:
-            print(url)    
+                            try:
+                                single,single_created_or_not = Single.objects.get_or_create(home=h_ply,away=a_ply,match=current_match)
+                            except Exception as e:
+                                single_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While Single match create or update")
+
+
+                        except Exception as e:
+                            print("Player Not found")
+
+                      
+                else:
+                    missing_data = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="The match is missing a player/team")

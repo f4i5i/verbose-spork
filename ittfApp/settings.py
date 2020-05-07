@@ -49,6 +49,8 @@ INSTALLED_APPS = [
      'rest_framework',
      'django_admin_listfilter_dropdown',
      'import_export',
+     'django_cron',
+     
 ]
 
 
@@ -79,6 +81,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
 
 WSGI_APPLICATION = 'ittfApp.wsgi.application'
 
@@ -177,3 +182,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # import dj_database_url
 # prod_db = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(prod_db)
+CRON_CLASSES = [
+    "tabletennis.cronjobs.MatchCronJob",
+]

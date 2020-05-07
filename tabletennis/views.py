@@ -1,8 +1,10 @@
 from django.shortcuts import render, HttpResponse
 import requests
 import xml.etree.ElementTree as ET
-
+from rq_scheduler import Scheduler
 import django_rq
+from datetime import timedelta
+
 # Create your views here.
 from .tasks import scrape
 from .models import *
@@ -18,6 +20,7 @@ def view1(request):
 def view2(request):
     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
     queue.enqueue(get_match_urls)
+
     return HttpResponse("Scraping Match Urls..........")
 
 def view3(request):
@@ -31,10 +34,12 @@ def view4(request):
     queue.enqueue(get_player_data)
     return HttpResponse("Scraping Players..........")
 
-# def view5(request):
-#     queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
-#     queue.enqueue(get_match_data)
-#     return HttpResponse("Scraping Matches..........")
+def view5(request):
+    queue = django_rq.get_queue('default',is_async=True,default_timeout=30000)
+    queue.enqueue(get_match_data)
+    scheduler = Scheduler(queue=queue)
+    scheduler.enqueue_in(timedelta(minutes=10),get_match_data)
+    return HttpResponse("Scraping Matches..........")
 
 
 # def PlayersXml(request):

@@ -18,8 +18,9 @@ def get_match_urls():
             m_urls = MatchUrl.objects.filter(champ_id=i.tour_id)
             for url in m_urls:
                 try:
-                    j_data = requests.get(url.match_url,headers=HEADERS,timeout=60).json()
+                    j_data = requests.get(url.match_url,headers=HEADERS,timeout=160).json()
                     rawmatch,_ = RawMatchData.objects.get_or_create(tt_champ=i,data_json=j_data)
+                    time.sleep(10)
                 except Exception as e:
                     print(e)
 
