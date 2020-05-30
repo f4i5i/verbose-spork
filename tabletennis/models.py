@@ -15,6 +15,9 @@ class RawData(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Error(models.Model):
     url = models.TextField()
     error = models.TextField()
@@ -27,7 +30,10 @@ class Player(models.Model):
     player_id = models.CharField(primary_key=True,max_length=200)
     player_key = models.ForeignKey(Player,related_name="playermain",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)  
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.player_id 
 
 
 class TTCompetition(models.Model):
@@ -39,7 +45,10 @@ class TTCompetition(models.Model):
     startdate = models.CharField(max_length=254)
     enddate = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)  
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.tour_id
 
     
 
@@ -54,7 +63,10 @@ class Event(models.Model):
     event_key = models.CharField(max_length=254)
     event_desc = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.event_key
 
 class Phase(models.Model):
     champ_phase = models.ForeignKey(TTCompetition,related_name="TTCompPhase",on_delete=models.PROTECT)
@@ -63,14 +75,16 @@ class Phase(models.Model):
     phase_evkey = models.CharField(max_length=254)
     phase_type = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
-
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.phase_key
 
 class RawMatchData(models.Model):
     tt_champ = models.ForeignKey(TTCompetition,related_name="TTCompRawData",on_delete=models.PROTECT)
     data_json = JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Match(models.Model):
@@ -83,13 +97,17 @@ class Match(models.Model):
     event = models.ForeignKey(Event,related_name="MatchEvent",on_delete=models.PROTECT)
     phase = models.ForeignKey(Phase,related_name="MatchPhase",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.match_date 
 
 class Team(models.Model):
     player_1 = models.ForeignKey(Player,related_name="P1Team",on_delete=models.PROTECT)
     player_2 = models.ForeignKey(Player,related_name="P2Team",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)    
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class Single(models.Model):
     home = models.ForeignKey(Player,related_name="HomePly",on_delete=models.PROTECT)
@@ -103,7 +121,8 @@ class Double(models.Model):
     away_T = models.ForeignKey(Team,related_name="AwayTeam",on_delete=models.PROTECT)
     match = models.ForeignKey(Match,related_name="DoubleMatch",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class MatchScrapingError(models.Model):
     error = models.TextField()

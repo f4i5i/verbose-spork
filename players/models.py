@@ -37,7 +37,8 @@ class Sport(models.Model):
         return self.name
 
 class Player(models.Model):
-    name = models.TextField(1000)
+    first_name = models.TextField(max_length=1000)
+    last_name = models.TextField(max_length=1000)
     gender =  models.CharField(max_length=100)
     dob = models.CharField(max_length=254)
     sport = models.ForeignKey(Sport,related_name="playersport",on_delete=models.PROTECT)
@@ -46,7 +47,7 @@ class Player(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.first_name
 
 
 class CompetitionType(models.Model):
@@ -54,11 +55,17 @@ class CompetitionType(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Season(models.Model):
     snid = models.IntegerField()
     tsname = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.tsname
 
 
 class Competition(models.Model):
@@ -70,6 +77,9 @@ class Competition(models.Model):
     snid = models.ForeignKey(Season,related_name="compseason",on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.trnname
 
 
 
@@ -85,14 +95,23 @@ class Round(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Group(models.Model):
     name = models.CharField(max_length=254)
     code = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Qualification(models.Model):
     name = models.CharField(max_length=254)
     code = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

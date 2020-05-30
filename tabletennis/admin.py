@@ -16,14 +16,43 @@ class PlayerAdmin(admin.ModelAdmin):
 class MatchScrapingErrorAdmin(admin.ModelAdmin):
     list_display = ('error','champ','desc')
 
+
+class TTCompetitionAdmin(admin.ModelAdmin):
+    list_display = ('tour_id','competition_id','gender','startdate','enddate')
+
+
+class DoubleAdmin(admin.ModelAdmin):
+    list_display = ('home_T', 'away_T', 'match')
+
+
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('player_1', 'player_2')
+
+
+class RawMatchDataAdmin(admin.ModelAdmin):
+    list_display = ('tt_champ', 'created_at')
+
+
+class MatchAdmin(admin.ModelAdmin):
+    list_display = ('match_date', 'tourn_id','m_time','venue','phase')
+
+class PhaseAdmin(admin.ModelAdmin):
+    list_display = ('champ_phase','phase_key','phase_desc','phase_evkey','phase_type')
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('champ_events','event_key','event_desc')
+
 admin.site.register(RawData)
+admin.site.register(Error)
 admin.site.register(Player,PlayerAdmin)
-admin.site.register(TTCompetition)
+admin.site.register(TTCompetition,TTCompetitionAdmin)
 admin.site.register(MatchUrl,MatchUrlAdmin)
-admin.site.register(RawMatchData)
-admin.site.register(Match)
-admin.site.register(Team)   
+admin.site.register(Event,EventAdmin)
+admin.site.register(Phase, PhaseAdmin)
+admin.site.register(RawMatchData,RawMatchDataAdmin)
+admin.site.register(Match,MatchAdmin)
+admin.site.register(Team,TeamAdmin)   
 admin.site.register(Single)
-admin.site.register(Double)
+admin.site.register(Double,DoubleAdmin)
 admin.site.register(MatchScrapingError,MatchScrapingErrorAdmin)   
 

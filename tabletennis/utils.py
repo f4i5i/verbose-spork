@@ -5,7 +5,9 @@ import time
 
 from .models import Error
 
-HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"}
+HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36",
+           "Connection": "keep-alive"
+            }
 
 # Scraping the World Tour
 def get_world_tour(year):

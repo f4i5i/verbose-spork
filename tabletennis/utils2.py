@@ -1,5 +1,6 @@
 import requests
 import re
+from requests.exceptions import Timeout
 import time
 from bs4 import BeautifulSoup
 
@@ -8,7 +9,11 @@ from players.models import Player,Sport ,Country
 from tabletennis.models import Error
 from tabletennis.models import Player as TTPlayer
 
-HEADERS = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36",
+           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+           "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+           "Connection": "keep-alive"
+           }
 
 
 def get_match_urls():
@@ -62,8 +67,10 @@ def get_player_data():
 
     for i in range(0,37601,100):
         new_str = str(i)
-    
-        req = requests.get(url+new_str,headers=HEADERS,timeout=60).text
+        try:
+            req = requests.get(url+new_str, headers=HEADERS, timeout=60).text
+        except Timeout as ex:
+            print("Tum Se Na ho Pae ga: ", ex)
         sp = BeautifulSoup(req,'html.parser')
         ply_id = sp.find_all('td',class_="fab_players___player_id fabrik_element fabrik_list_35_group_36 integer")
         tds = sp.find_all('td',class_="fab_players___name fabrik_element fabrik_list_35_group_36")
@@ -75,6 +82,14 @@ def get_player_data():
             p_id = ply_id[p].text.strip()
 
             p_name = tds[p].text.replace("^","").strip()
+            lpattren = re.compile('\w[A-Z]+')
+            fpattren = re.compile('\w[a-z]+')
+            l_name = lpattren.findall(p_name)
+            f_name = fpattren.findall(p_name)
+            lname = " "
+            lname = lname.join(l_name)
+            fname = " "
+            fname = fname.join(f_name)
             p_org = asc[p].text.strip()
             p_gen = gen[p].text.strip()
             p_dob = dob[p].text.strip()
@@ -82,5 +97,6 @@ def get_player_data():
 
             p_country, _ = Country.objects.get_or_create(code=p_org)
             sport_id = Sport.objects.get(pk=10)
-            ply,created = Player.objects.get_or_create(name= p_name,gender= p_gen,dob= p_dob,sport=sport_id,country=p_country)
+            
+            ply,created = Player.objects.get_or_create(first_name= fname,last_name=lname,gender= p_gen,dob= p_dob,sport=sport_id,country=p_country)
             tt,boolvalue = TTPlayer.objects.get_or_create(player_id=p_id,player_key=ply)

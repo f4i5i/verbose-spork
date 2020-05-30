@@ -50,6 +50,7 @@ INSTALLED_APPS = [
      'django_admin_listfilter_dropdown',
      'import_export',
      'django_cron',
+     'django_extensions',
      
 ]
 
@@ -102,7 +103,7 @@ DATABASES = {
         'USER' : 'djangouser',
         'PASSWORD' : 'GW6T5HX7W3',
         'HOST' : 'localhost',
-        'PORT' : 3306
+        'PORT' : 3307
         }
 }
 
@@ -185,3 +186,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 CRON_CLASSES = [
     "tabletennis.cronjobs.MatchCronJob",
 ]
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

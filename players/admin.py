@@ -18,18 +18,28 @@ class SportAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 
 class CityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ('name','country' )
+    search_fields = ('name',)
 
 class CompTypeAdmin(admin.ModelAdmin):
     list_display = ('id','name')
+    search_fields = ('name',)
 
 
 class PlayerAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    list_display = ('id','name','gender','dob','sport','country')
+    list_display = ('id','first_name','last_name','gender','dob','sport','country')
+    search_fields = ('first_name','last_name',)
 
+
+class SeasonAdmin(admin.ModelAdmin):
+    list_display = ('snid', 'tsname')
+    search_fields = ('tsname',)
+
+class CompetitionAdmin(admin.ModelAdmin):
+    list_display = ("trnid",'trnname','sptid','cntid','turid','snid')
 
 admin.site.register(Country,CountryAdmin)
 admin.site.register(Player,PlayerAdmin)
 admin.site.register(City,CityAdmin)
 admin.site.register(CompetitionType,CompTypeAdmin)
-admin.site.register(Competition)
-admin.site.register(Season)
+admin.site.register(Competition,CompetitionAdmin)
+admin.site.register(Season, SeasonAdmin)
