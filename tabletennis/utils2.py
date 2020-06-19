@@ -3,6 +3,7 @@ import re
 from requests.exceptions import Timeout
 import time
 from bs4 import BeautifulSoup
+import socket
 
 from .models import *
 from players.models import Player,Sport ,Country
@@ -63,6 +64,8 @@ def get_country():
 
 
 def get_player_data():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(160)
     url =  "https://results.ittf.link/index.php?option=com_fabrik&view=list&listid=35&Itemid=155&resetfilters=0&clearordering=0&clearfilters=0&limit35=100&limitstart35="
 
     for i in range(0,37601,100):

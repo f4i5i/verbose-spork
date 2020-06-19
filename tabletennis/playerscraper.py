@@ -54,9 +54,10 @@ def get_match_data():
                     try:
                         current_match,match_created_or_not = Match.objects.get_or_create(match_date=m_date,tourn_id=champ,ppstatus="PLAYED",
                                                             m_time=match_time,venue=venue,m_number=m_number,event=event_db,phase=phase_db)
+
                     except Exception as e:
                         match_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While scraping match")
-
+                        print(current_match)
                     if isTeam_home.bit_length() > 1:
                         home_player1 = data['Home']['Members'][0]['Reg']
                         home_player2 = data['Home']['Members'][1]['Reg']
@@ -85,7 +86,7 @@ def get_match_data():
                         try:
                             double_match,double_created_or_not = Double.objects.get_or_create(home_T=team_home,away_T=team_away,match=current_match)
                         except Exception as e:
-                            double_errpr = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While Creating or Updating Double Team")
+                            double_error = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="Error While Creating or Updating Double Team")
 
 
                     else:
@@ -107,5 +108,8 @@ def get_match_data():
                             print("Player Not found")
 
                       
-                else:
-                    missing_data = MatchScrapingError.objects.get_or_create("missing player data",champ=champ,desc="The match is missing a player/team")
+                # else:
+                #     try:
+                #         pass
+                #     except Exception as e:
+                #         missing_data = MatchScrapingError.objects.get_or_create(error=e,champ=champ,desc="The match is missing a player/team")
