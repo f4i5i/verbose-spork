@@ -129,16 +129,18 @@ def double_player(request):
     a = ET.Element('Teams',created_at=str(timezone.now()))
     for i in range(len(all_teams)):
         one_team=all_teams[i]
-        P1_name = one_team.player_1.player_key.name.strip().lower().split(' ')
-        P2_name = one_team.player_2.player_key.name.strip().lower().split(' ')
-        P1_Fname = " "
-        P1_Fname = P1_Fname.join(P1_name[1:])
-        P1_Lname = P1_name[0].capitalize()
-        P1_Fname = P1_Fname.capitalize()
-        P2_Fname = " "
-        P2_Fname = P2_Fname.join(P1_name[1:])
-        P2_Fname = P2_Fname.capitalize()
-        P2_Lname = P2_name[0].capitalize()
+        P1_Fname = one_team.player_1.player_key.first_name
+        P1_Lname = one_team.player_1.player_key.last_name.lower()
+        P2_Fname = one_team.player_2.player_key.first_name
+        P2_Lname = one_team.player_2.player_key.last_name
+        # P1_Fname = " "
+        # P1_Fname = P1_Fname.join(P1_name[1:])
+        P1_Lname = P1_Lname.capitalize()
+        # P1_Fname = P1_Fname.capitalize()
+        # P2_Fname = " "
+        # P2_Fname = P2_Fname.join(P1_name[1:])
+        # P2_Fname = P2_Fname.capitalize()
+        P2_Lname = P2_Lname.capitalize()
         b = ET.SubElement(a,'Team',id=str(one_team.id),name =P1_Lname +" & "+ P2_Lname )
         c = ET.SubElement(b, 'player1', id=str(one_team.player_1.player_key.id), name=str(P1_Fname +" "+ P1_Lname))
         d = ET.SubElement(b, 'player2', id=str(one_team.player_2.player_key.id), name=str(P2_Fname +" "+ P2_Lname))
