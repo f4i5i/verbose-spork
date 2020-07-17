@@ -36,7 +36,9 @@ def get_match_data():
                 event = data['Key'].split('.')[:2]
                 event = ".".join(event)
                 event_db = Event.objects.get(champ_events=champ,event_key=event)
+                ttComp_db = TTCompetition.objects.get(tour_id=champ)
                 venue = data['Venue']
+                mf_date = ttComp_db.startdate[:-2] + m_date[4:]
 
                 home = data['Home']['Desc'].strip()
                 away = data['Away']['Desc'].strip()
@@ -47,12 +49,12 @@ def get_match_data():
                 print(champ)
                 print(home)
                 print(away)
-                print(m_date)
+                print(mf_date)
                 print(phase)
                 print("---------------------------------------")
                 if home != 'BYE' and away != 'BYE':
                     try:
-                        current_match,match_created_or_not = Match.objects.get_or_create(match_date=m_date,tourn_id=champ,ppstatus="PLAYED",
+                        current_match,match_created_or_not = Match.objects.get_or_create(match_date=mf_date,tourn_id=champ,ppstatus="PLAYED",
                                                             m_time=match_time,venue=venue,m_number=m_number,event=event_db,phase=phase_db)
 
                     except Exception as e:

@@ -31,6 +31,10 @@ def tour_info_general(links,type_string,year):
         champ_desc = tour_list[5]
         season_name = champ_desc[-1]
         tournament_name = champ_desc[0]
+        Npattren = re.compile('\w[A-Za-z]+')
+        trn_nam = Npattren.findall(tournament_name)
+        trn_name = " "
+        trn_name = trn_name.join(trn_nam)
         location = tour_list[7]
         champ_events = tour_list[8]
         champ_Phases = tour_list[9]
@@ -53,7 +57,7 @@ def tour_info_general(links,type_string,year):
         season,season_ = Season.objects.get_or_create(snid=year,tsname=season_name)
 
         # players.Competition INSERT
-        competition, comp_ = Competition.objects.get_or_create(trnname=tournament_name,sptid=sport,turid=comp_type,snid=season) 
+        competition, comp_ = Competition.objects.get_or_create(trnname= trn_name ,sptid=sport,turid=comp_type,snid=season) 
 
         # tabletennis.TTCompetition INSERT
         ttcomp, ttcomp_ = TTCompetition.objects.get_or_create(tour_id=champ_id,competition_id=competition,finished=is_fin,gender=genders,

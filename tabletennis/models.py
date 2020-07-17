@@ -2,7 +2,7 @@ from django.db import models
 import os
 from django_mysql.models import JSONField
 # Create your models here.
-from players.models import City,Player,Competition
+from players.models import Player,Competition
 
 
 

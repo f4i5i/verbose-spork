@@ -34,8 +34,8 @@ class RawMatchDataAdmin(admin.ModelAdmin):
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('match_date', 'tourn_id','m_time','venue','phase')
-
+    list_display = ('id', 'match_date', 'm_time', 'tourn_id', 'phase')
+    search_fields = ('id','tourn_id')
 class PhaseAdmin(admin.ModelAdmin):
     list_display = ('champ_phase','phase_key','phase_desc','phase_evkey','phase_type')
 

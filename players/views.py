@@ -5,6 +5,7 @@ from tabletennis.models import *
 from .models import *
 from django.http import QueryDict
 from django.utils import timezone
+from datetime import datetime
 
 
 def PlayerXML(request):
@@ -26,7 +27,6 @@ def PlayerXML(request):
     q.update(data)
     
     data1 = Player.objects.filter(**q.dict()).values_list()
-    print(data1)
 
     # XML Generated according to QuerySet
     a = ET.Element('Players',created_at=str(timezone.now()))
@@ -133,13 +133,7 @@ def double_player(request):
         P1_Lname = one_team.player_1.player_key.last_name.lower()
         P2_Fname = one_team.player_2.player_key.first_name
         P2_Lname = one_team.player_2.player_key.last_name
-        # P1_Fname = " "
-        # P1_Fname = P1_Fname.join(P1_name[1:])
         P1_Lname = P1_Lname.capitalize()
-        # P1_Fname = P1_Fname.capitalize()
-        # P2_Fname = " "
-        # P2_Fname = P2_Fname.join(P1_name[1:])
-        # P2_Fname = P2_Fname.capitalize()
         P2_Lname = P2_Lname.capitalize()
         b = ET.SubElement(a,'Team',id=str(one_team.id),name =P1_Lname +" & "+ P2_Lname )
         c = ET.SubElement(b, 'player1', id=str(one_team.player_1.player_key.id), name=str(P1_Fname +" "+ P1_Lname))
@@ -150,5 +144,87 @@ def double_player(request):
 
 
 
-def Match(request):
-    pass
+# def matchXML(request):
+#     data = request.GET.dict()
+#     sings = Single.objects.all()
+#     now = datetime.now().replace(microsecond=0)
+#     time_stamp =str(datetime.timestamp(now)).split('.')
+#     a = ET.Element('fixtures', timestamp=str(time_stamp[0]), time=str(now))
+
+#     for i in range(len(sings)):
+#         sin = sings[i]
+#         one_match = Match.objects.get(id=sin.match_id)
+#         one_phase = Phase.objects.get(id=one_match.phase_id)
+#         tourn_info = Competition.objects.get(trnid=one_match.tourn_id.competition_id_id)
+#         round_name = one_phase.phase_desc.split('-')
+#         season_info = Season.objects.get(id=one_match.tourn_id.competition_id.snid_id)
+#         event_info = Event.objects.get(id=one_match.event_id)
+#         match_id = one_match.id
+#         lastupdate =one_match.updated_at
+#         H_Fname = sin.home.player_key.first_name
+#         H_Lname = sin.home.player_key.last_name.lower()
+#         A_Fname = sin.away.player_key.first_name
+#         A_Lname = sin.away.player_key.last_name
+#         H_Lname = H_Lname.capitalize()
+#         A_Lname = A_Lname.capitalize()
+#         gend = str(one_phase.phase_key[0:3:2])
+#         b = ET.SubElement(a, 'fixture', id =str(match_id), last_update=str(lastupdate))
+#         c = ET.SubElement(b, 'Time')
+#         c.text = one_match.m_time
+#         d = ET.SubElement(b, 'stage', turid=str(tourn_info.turid.id), turname=str(tourn_info.turid.name), trnid=str(tourn_info.trnid), trnname=str(tourn_info.trnname), tsid=str(season_info.id), tsname=str(season_info.tsname), gen=gend, type=str(one_phase.phase_type), cntid=str(tourn_info.cntid.id), sptid=str(tourn_info.sptid.id), rndid=str(one_phase.id), rndname=str(round_name[1][1::]))
+#         if gend == "MS" or gend == "WS":
+#             e = ET.SubElement(b, 'hteam', id=str(sin.home.player_key.id), name=str(H_Fname + ", " + H_Lname))
+#             f = ET.SubElement(b, 'ateam', id=str(sin.away.player_key.id), name=str(A_Fname + ", " + A_Lname))
+#         else:
+#             e = ET.SubElement(b, 'hteam', id="", name="")
+#             f = ET.SubElement(e, 'player1', id='', name='')
+#             g = ET.SubElement(e, 'player2', id='', name='')
+#             h = ET.SubElement(b, 'ateam', id="", name="")
+#             j = ET.SubElement(h, 'player1', id='', name='')
+#             k = ET.SubElement(h, 'player1', id='', name='')
+#     res = ET.tostring(a)
+
+#     return HttpResponse(res, content_type="application/xml")
+
+def matchXML(request):
+    data = request.GET.dict()
+    sings = Single.objects.all()
+    doubles = Double.objects.all()
+    now = datetime.now().replace(microsecond=0)
+    time_stamp =str(datetime.timestamp(now)).split('.')
+    a = ET.Element('fixtures', timestamp=str(time_stamp[0]), time=str(now))
+
+    for i in range(len(sings)):
+        sin = sings[i]
+        one_match = Match.objects.get(id=sin.match_id)
+        one_phase = Phase.objects.get(id=one_match.phase_id)
+        tourn_info = Competition.objects.get(trnid=one_match.tourn_id.competition_id_id)
+        round_name = one_phase.phase_desc.split('-')
+        season_info = Season.objects.get(id=one_match.tourn_id.competition_id.snid_id)
+        event_info = Event.objects.get(id=one_match.event_id)
+        match_id = one_match.id
+        lastupdate =one_match.updated_at
+        H_Fname = sin.home.player_key.first_name
+        H_Lname = sin.home.player_key.last_name.lower()
+        A_Fname = sin.away.player_key.first_name
+        A_Lname = sin.away.player_key.last_name
+        H_Lname = H_Lname.capitalize()
+        A_Lname = A_Lname.capitalize()
+        gend = str(one_phase.phase_key[0:3:2])
+        b = ET.SubElement(a, 'fixture', id =str(match_id), last_update=str(lastupdate))
+        c = ET.SubElement(b, 'Time')
+        c.text = one_match.m_time
+        d = ET.SubElement(b, 'stage', turid=str(tourn_info.turid.id), turname=str(tourn_info.turid.name), trnid=str(tourn_info.trnid), trnname=str(tourn_info.trnname), tsid=str(season_info.id), tsname=str(season_info.tsname), gen=gend, type=str(one_phase.phase_type), cntid=str(tourn_info.cntid.id), sptid=str(tourn_info.sptid.id), rndid=str(one_phase.id), rndname=str(round_name[1][1::]))
+        if gend == "MS" or gend == "WS":
+            e = ET.SubElement(b, 'hteam', id=str(sin.home.player_key.id), name=str(H_Fname + ", " + H_Lname))
+            f = ET.SubElement(b, 'ateam', id=str(sin.away.player_key.id), name=str(A_Fname + ", " + A_Lname))
+        else:
+            e = ET.SubElement(b, 'hteam', id="", name="")
+            f = ET.SubElement(e, 'player1', id='', name='')
+            g = ET.SubElement(e, 'player2', id='', name='')
+            h = ET.SubElement(b, 'ateam', id="", name="")
+            j = ET.SubElement(h, 'player1', id='', name='')
+            k = ET.SubElement(h, 'player1', id='', name='')
+    res = ET.tostring(a)
+
+    return HttpResponse(res, content_type="application/xml")

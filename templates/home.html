@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Open Positions {% endblock title %}
+{% block title %}XMl Feeds {% endblock title %}
 
 {% block content %}
 
@@ -11,8 +11,10 @@
               <span class="card-title center">XML Feed</span>
             </div>
             <div class="card-action">
-              <a href="{% url 'infoxml' %}">Tournaments</a>
-              <a href="{% url 'xml2' %}">Players</a>
+              <a href="{% url 'tourxml' %}">Tournaments</a>
+              <a href="{% url 'xmlfunc' %}">Players</a>
+              <a href="{% url 'double_player' %}">Double Players</a>
+              <a href="{% url 'stagexml' %}">Stages</a>
             </div>
           </div>
         </div>
