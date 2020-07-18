@@ -103,7 +103,7 @@ DATABASES = {
         'USER' : 'djangouser',
         'PASSWORD' : 'GW6T5HX7W3',
         'HOST' : 'localhost',
-        'PORT' : 3306
+        'PORT' : 3307
         }
 }
 

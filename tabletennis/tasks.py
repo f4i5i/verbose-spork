@@ -32,9 +32,9 @@ def scrape():
 
 
     tour_info_general(world_tour_links,"World Tour",2019)
-    tour_info_general(challenge_series_links,"Challenge Series",2020)
-    tour_info_general(world_champ_links,"World Championship",2020)
-    tour_info_general(word_cup_links,"World Cup",2020)       
+    tour_info_general(challenge_series_links,"Challenge Series",2019)
+    tour_info_general(world_champ_links,"World Championship",2019)
+    tour_info_general(word_cup_links,"World Cup",2019)       
        
 
        
