@@ -4,7 +4,7 @@ from django.db import models
 class Country(models.Model):
     name = models.CharField(max_length=254)
     code = models.CharField(max_length=50)
-    GMT = models.CharField(max_length=254)
+    #GMT = models.CharField(max_length=254)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
